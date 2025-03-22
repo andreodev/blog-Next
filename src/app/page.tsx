@@ -38,7 +38,7 @@ export default function Home() {
   };
 
   return (
-    <div className="font-[family-name:var(--font-inter)] min-h-screen flex flex-col">
+    <div className="font-[family-name:var(--font-inter)] min-h-screen flex flex-col ">
       <Info />
       <header className="text-5xl text-[#454444] text-center py-10 w-full">
         <h1>LOGO</h1>
@@ -47,7 +47,7 @@ export default function Home() {
       <div className="flex mt-28 items-center justify-center">
         <Form {...form}>
           <form
-            className="flex flex-col space-y-4 w-[57rem]"
+            className="flex flex-col space-y-4 w-[57rem] "
             onSubmit={form.handleSubmit(handleSubmit)}
           >
             <FormField
@@ -58,7 +58,7 @@ export default function Home() {
                   <FormLabel className="font-medium">Email Address</FormLabel>
                   <FormControl>
                     <input
-                      className="border-b-1 w-full border-[#454444] p-2 cursor-pointer"
+                      className="border-b-1 w-full border-[#454444] p-2 cursor-pointer outline-hidden"
                       type="email"
                       {...field}
                     />
@@ -74,7 +74,7 @@ export default function Home() {
                   <FormLabel className="font-medium">Password</FormLabel>
                   <FormControl>
                     <input
-                      className="border-b-1 w-full border-[#454444] p-2 cursor-pointer"
+                      className="border-b-1 w-full border-[#454444] p-2 cursor-pointer outline-hidden"
                       type="password"
                       {...field}
                     />

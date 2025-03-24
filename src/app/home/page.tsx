@@ -1,32 +1,39 @@
-import Info from "@/components/info";
-import Navbar from "./components/navbar";
-import Image from "next/image";
-import headerImage from "../images/Group 17.png";
-import { Button } from "@/components/ui/button";
+import HeaderProps from "../products/components/headerImage";
+import image1 from "@/app/images/anime.jpg"
+import CardsProps from "@/components/CardsProps";
 
-export default function Home() {
-  return (
+
+
+export default function HomePage() {
+  return(
     <div>
       <header>
-        <Info />
-        <Navbar />
+        <HeaderProps 
+        text="Lorem ipsum dolor sit amet, cons ecte tur adipiscing elit. Sed ullam vitae" 
+        buttonText="Shop" 
+        imageSrc={image1}/> 
       </header>
-      <div className="flex justify-center items-center p-6">
-        <div className="w-7xl relative">
-          <Image
-            src={headerImage}
-            alt="Image"
-            className="object-cover w-full rounded-md"
-          />
-          <h1 className="absolute top-1/3 left-1/5 transform -translate-x-1/2 -translate-y-1/2 w-[398px] text-4xl font-light text-[#454444]">
-            LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT.
-          </h1>
-          <Button 
-          className="absolute top-1/2 left-1/7 p-6 w-[191px] cursor-pointer rounded-2xl transform -translate-x-1/2 -translate-y-1/2 mt-16 bg-[#454444] font-bold text-lg">
-            Shop now
-          </Button>
+      <main>
+        <div className="flex items-center justify-center gap-14">
+        <CardsProps 
+        imageUrl={image1} 
+        name="Lorem ipsum dolor sit amet, cons ecte tur adipiscing elit. Sed ullam vitae" 
+        price="12.00"
+        />
+        <CardsProps 
+        imageUrl={image1} 
+        name="Lorem ipsum dolor sit amet, cons ecte tur adipiscing elit. Sed ullam vitae" 
+        price="12.00"
+        />
+        <CardsProps 
+        imageUrl={image1} 
+        name="Lorem ipsum dolor sit amet, cons ecte tur adipiscing elit. Sed ullam vitae" 
+        price="12.00"
+        />
+
         </div>
-      </div>
+        
+      </main>
     </div>
-  );
+  )
 }

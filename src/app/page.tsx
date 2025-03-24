@@ -11,7 +11,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { redirect } from "next/navigation";
-import Info from "@/components/info";
 
 type TFormLogin = {
   email: string;
@@ -39,7 +38,6 @@ export default function Home() {
 
   return (
     <div className="font-[family-name:var(--font-inter)] min-h-screen flex flex-col ">
-      <Info />
       <header className="text-5xl text-[#454444] text-center py-10 w-full">
         <h1>LOGO</h1>
         <h2 className="text-sm text-center ">Log in</h2>

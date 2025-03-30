@@ -1,3 +1,5 @@
+"use client"
+
 import Image, { type StaticImageData } from "next/image";
 import { Button } from "@/components/ui/button";
 

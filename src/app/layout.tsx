@@ -18,7 +18,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "E-commerce",
+  title: "Blog Pessoal",
   description: "Desenvolvido por Andreo Henrique.",
 
 };
@@ -33,7 +33,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased`}
       >
-        {children}
+          {children}  
       </body>
     </html>
   );

@@ -1,7 +1,5 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  /* config options here */
+module.exports = {
+  images: {
+    domains: ['avatars.githubusercontent.com', 'i.pinimg.com', 'via.placeholder.com'],
+  },
 };
-
-export default nextConfig;

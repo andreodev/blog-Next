@@ -1,0 +1,29 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model user { // Nome do modelo em minúsculas
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  password String
+  email     String   @unique
+  image     String?  // Foto do perfil
+  banner    String?  // Imagem de fundo
+  bio       String?  // Sobre o usuário
+  location  String?  // Localização
+  posts     post[]   @relation("UserPosts")
+}
+
+model post { // Nome do modelo em minúsculas
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  userId    String   @db.ObjectId
+  user      user     @relation(fields: [userId], references: [id], name: "UserPosts")
+}

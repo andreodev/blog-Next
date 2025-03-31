@@ -1,17 +1,21 @@
 
 import Navbar from "@/components/navbar";
 import Post from "@/components/post";
-import ProfileProps from "@/components/profileProps";
+import Profile from "@/components/profileProps";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 export default async function Perfil() {
+  const session = await getServerSession();
 
+  if(!session) {
+    redirect("/")
+  }
 
   return (
     <>
       <Navbar />
       <div className="p-6">
-        <ProfileProps />
+        <Profile />
       </div>
       <div>
         <Post />

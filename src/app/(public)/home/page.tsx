@@ -1,16 +1,20 @@
 
+import AllPosts from "@/components/allPosts";
 import Footer from "@/components/footer";
+import Header from "@/components/headerImage";
 import Navbar from "@/components/navbar";
+import bgImage from "@/assets/images/anime.jpg"
 
 export default async function HomePage() {
   return(
     <div>
       <header>
         <Navbar />
+        <Header imageSrc={bgImage} buttonText="EXPLORAR" text="SEJA BEM VINDO AO MEU PROJETO ANDRU-SOCIAL"/>
       </header>
       <main>
-        <div className="flex items-center justify-center gap-14">
-
+        <div >
+            <AllPosts />
         </div>
         
       </main>

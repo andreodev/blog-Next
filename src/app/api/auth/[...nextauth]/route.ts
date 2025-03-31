@@ -1,10 +1,10 @@
-import NextAuth from "next-auth";
+import NextAuth, { NextAuthOptions } from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import { prisma } from "@/lib/prisma";
 
-const authOptions = {
+export const authOptions: NextAuthOptions = {
   pages: {
     signIn: "/",
   },
@@ -16,10 +16,7 @@ const authOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: {
-          label: "Email",
-          type: "email",
-        },
+        email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
@@ -32,11 +29,7 @@ const authOptions = {
           throw new Error("Usuário não encontrado!");
         }
 
-        // Comparando a senha
-        const isValid = await bcrypt.compare(
-          credentials.password,
-          user.password
-        );
+        const isValid = await bcrypt.compare(credentials.password, user.password);
         if (!isValid) {
           throw new Error("Senha incorreta!");
         }
@@ -45,17 +38,31 @@ const authOptions = {
           id: user.id,
           name: user.name,
           email: user.email,
-          image:
-            user.image ||
-            "https://i.pinimg.com/736x/7f/e4/25/7fe425baaa808391cd7e24f091a9967b.jpg",
+          image: user.image || "https://i.pinimg.com/736x/7f/e4/25/7fe425baaa808391cd7e24f091a9967b.jpg",
         };
       },
     }),
   ],
+  session: {
+    strategy: "jwt",
+    maxAge: 30 * 60, 
+  },
+  
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.email;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.email = token.email as string;
+      }
+      return session;
+    },
+  },
 };
 
-// Criação do handler do NextAuth sem tipagem explícita
 const handler = NextAuth(authOptions);
-
-// Exportando o handler para as rotas GET e POST
 export { handler as GET, handler as POST };

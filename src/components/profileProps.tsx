@@ -1,16 +1,43 @@
 "use client";
 
-
+import { useUsers } from "@/app/(private)/perfil/hook/useFetch";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
-export default function ProfileProps() {
+export default function Profile() {
+  const { data } = useSession();
+  const { users, error } = useUsers();
+  const [filteredUser, setFilteredUser] = useState<{
+    id: string;
+    email: string;
+    name: string;
+    image: string;
+    banner: string;
+    bio: string;
+    location: string;
+  } | null>(null); 
+
+  useEffect(() => {
+    if (users && users.length > 0 && data?.user?.email) {
+      const userPosts = users.filter(
+        (userItem) => userItem.email === data?.user?.email
+      );
+      setFilteredUser(userPosts.length > 0 ? userPosts[0] : null); 
+    }
+  }, [users, data]);
+
+  if (!filteredUser) {
+    return <div>Carregando...</div>; 
+  }
+
   return (
     <div className="max-w-4xl mx-auto p-4 bg-white rounded-lg shadow-md">
       <div className="relative">
         <Image
           width={100}
           height={10}
-          src="https://i.pinimg.com/736x/f1/4c/4c/f14c4c88a836ec9c5f79d313e0d8cd7d.jpg"
+          src={filteredUser.banner || "https://i.pinimg.com/736x/f1/4c/4c/f14c4c88a836ec9c5f79d313e0d8cd7d.jpg"} 
           alt="Banner"
           className="w-full h-32 object-cover rounded-t-lg"
           priority
@@ -20,7 +47,7 @@ export default function ProfileProps() {
           <Image
             width={100}
             height={100}
-            src="https://i.pinimg.com/736x/f1/4c/4c/f14c4c88a836ec9c5f79d313e0d8cd7d.jpg"
+            src={filteredUser.image || "https://i.pinimg.com/736x/f1/4c/4c/f14c4c88a836ec9c5f79d313e0d8cd7d.jpg"} 
             alt="Profile"
             className="w-20 h-20 rounded-full border-4 border-white"
             priority
@@ -30,18 +57,19 @@ export default function ProfileProps() {
 
       <div className="mt-12">
         <h1 className="text-xl font-semibold text-gray-800">
-          "teste"
+          {filteredUser.name}
         </h1>
-        <p className="text-sm text-gray-600">@"resre"</p>
+        <p className="text-sm text-gray-600">@{filteredUser.name}</p>
       </div>
 
       <div className="mt-4">
         <h2 className="text-lg font-medium text-gray-800">Sobre</h2>
-        <p className="text-gray-600 text-sm">asd</p>
+        <p className="text-gray-600 text-sm">{filteredUser.bio || "Sem bio"}</p>
       </div>
+
       <div className="mt-4">
         <h2 className="text-lg font-medium text-gray-800">Localização</h2>
-        <p className="text-gray-600 text-sm">adasd</p>
+        <p className="text-gray-600 text-sm">{filteredUser.location || "Localização não fornecida"}</p>
       </div>
 
       <div className="mt-4 flex space-x-3">

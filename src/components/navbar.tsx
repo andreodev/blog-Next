@@ -8,6 +8,7 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDownIcon, CogIcon, UserIcon } from "lucide-react";
+import ButtonLogout from "./buttonLogout";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,9 +25,7 @@ const Navbar = () => {
           <a href="#footer" className="hover:text-gray-400">
             Sobre
           </a>
-          <a href="/contact" className="hover:text-gray-400">
-            Contato
-          </a>
+          <ButtonLogout />
 
           <DropdownMenu>
             <DropdownMenuTrigger>
@@ -39,10 +38,6 @@ const Navbar = () => {
               <DropdownMenuItem>
                 <UserIcon className="w-4 h-4 mr-2" />
                 <a href="/perfil">Meu Perfil</a>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CogIcon className="w-4 h-4 mr-2" />
-                Configurações
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

@@ -1,45 +1,88 @@
 "use client";
 
-import { usePosts } from "@/app/(private)/perfil/hook/useFetch";
+import { usePosts, useUsers } from "@/app/(private)/perfil/hook/useFetch";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import type { PostDto } from "./DTO/postDTO";
+import Image from "next/image";
 
-
-export default function Post() {
-  const { data, status } = useSession();
+export default function AllPosts() {
+  const { data } = useSession();
   const { post, error } = usePosts();
-  const [filteredPosts, setFilteredPosts] = useState< PostDto[]>([]);
+  const { users } = useUsers();
+  const [postsWithUserInfo, setPostsWithUserInfo] = useState<
+    {
+      id: string;
+      title: string;
+      content: string;
+      createdAt: string;
+      userEmail: string;
+      userName: string;
+      userImage: string;
+      image: string;
+    }[]
+  >([]);
 
   useEffect(() => {
-    if (post && post.length > 0) {
-      const userPosts = post.filter(postItem => postItem.userEmail === data?.user?.email);
-      setFilteredPosts(userPosts);
+    if (post && post.length > 0 && users && users.length > 0) {
+      // Filtrando os posts para mostrar apenas os do usuário da sessão
+      const filteredPosts = post.filter((postItem) => postItem.userEmail === data?.user?.email);
+
+      // Associando cada post ao nome e imagem do usuário
+      const postsWithUser = filteredPosts.map((postItem) => {
+        const user = users.find((userItem) => userItem.email === postItem.userEmail);
+        return {
+          ...postItem,
+          userName: user?.name || "Desconhecido",
+          userImage: user?.image || "https://i.pinimg.com/736x/8a/9f/ac/8a9fac6159e698818b553eac700e4a57.jpg",
+        };
+      });
+      setPostsWithUserInfo(postsWithUser);
     }
-    
-  }, [post, data]);
+  }, [post, users, data?.user?.email]); // Adicionado data?.user?.email como dependência
 
   if (error) {
     console.error("Erro:", error);
   }
 
   return (
-    <div className="grid gap-6 p-4 max-w-2xl mx-auto">
-      {filteredPosts.map((post) => (
-        <div
-          key={post.id}
-          className="bg-white shadow-lg rounded-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow"
-        >
-          <h2 className="text-xl font-semibold text-gray-800 mb-2">
-            {post.title}
-          </h2>
-          <p className="text-gray-600 mb-4">{post.content}</p>
-          <div className="text-sm text-gray-500 flex justify-between">
-            <span>{new Date(post.createdAt).toLocaleDateString()}</span>
-            <span className="font-medium text-gray-700">{post.userEmail}</span>
+    <div className="max-w-4xl mx-auto p-4 bg-white rounded-lg shadow-md">
+      {postsWithUserInfo.length === 0 ? (
+        <p className="text-center text-gray-500">Nenhum post disponível.</p>
+      ) : (
+        postsWithUserInfo.map((postItem) => (
+          <div key={postItem.id} className="mb-6">
+            <div className="flex items-center space-x-4">
+              {/* Avatar */}
+              <Image
+                src={postItem.userImage}
+                alt={postItem.userName}
+                width={40}
+                height={40}
+                className="rounded-full"
+              />
+              <div>
+                {/* Nome do usuário */}
+                <p className="font-semibold text-gray-800">{postItem.userName}</p>
+                {/* Data de criação do post */}
+                <p className="text-sm text-gray-500">
+                  {new Date(postItem.createdAt).toLocaleDateString()}
+                </p>
+              </div>
+            </div>
+            <div className="mt-4">
+              {/* Conteúdo do post */}
+              <h2 className="text-lg font-semibold text-gray-800">{postItem.title}</h2>
+              <p className="text-gray-600">{postItem.content}</p>
+              <Image
+                alt="Imagem do post"
+                src={postItem.image}
+                width={100}
+                height={100}
+              />
+            </div>
           </div>
-        </div>
-      ))}
+        ))
+      )}
     </div>
   );
-};
+}

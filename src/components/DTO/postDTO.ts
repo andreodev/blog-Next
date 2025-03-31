@@ -4,4 +4,6 @@ export interface PostDto {
   content: string;
   createdAt: string;
   userEmail: string;
+  image: string;
+  comment: string;
 }

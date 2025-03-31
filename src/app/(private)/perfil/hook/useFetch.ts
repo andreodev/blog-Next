@@ -20,6 +20,8 @@ export function usePosts() {
             id: post.id,
             title: post.title,
             content: post.content,
+            image: post.image,
+            comment: post.comment,
             createdAt: post.createdAt,
             userEmail: post.userEmail,
           };
@@ -57,6 +59,7 @@ export function useUsers() {
           return {
             id: user.id,
             email: user.email,
+            nameUser: user.name,
             name: user.name,
             image: user.image,
             banner: user.banner,

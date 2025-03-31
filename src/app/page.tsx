@@ -1,9 +1,15 @@
 
 import LoginForm from "@/components/loginForm"
+import { getServerSession } from "next-auth"
+import { redirect } from "next/navigation"
 
 export default async function LoginPage() {
 
+  const session = await getServerSession()
 
+  if(session) {
+    redirect("/home")
+  }
   
   return (
     <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">

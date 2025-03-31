@@ -18,6 +18,7 @@ export default function AllPosts() {
       userEmail: string;
       userName: string;
       userImage: string;
+      image: string;
     }[]
   >([]);
 
@@ -69,6 +70,13 @@ export default function AllPosts() {
               {/* Conteúdo do post */}
               <h2 className="text-lg font-semibold text-gray-800">{postItem.title}</h2>
               <p className="text-gray-600">{postItem.content}</p>
+              <Image
+              alt="ee"
+              src={postItem.image}
+              width={100}
+              height={100}
+              
+              />
             </div>
           </div>
         ))

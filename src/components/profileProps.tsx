@@ -18,8 +18,8 @@ export default function Profile() {
       );
       setFilteredUser(userPosts.length > 0 ? userPosts[0] : null); 
     }
+    console.log(users)
   }, [users, data]);
-
   if (!filteredUser) {
     return <div>Carregando...</div>; 
   }
@@ -52,7 +52,7 @@ export default function Profile() {
         <h1 className="text-xl font-semibold text-gray-800">
           {filteredUser.name}
         </h1>
-        <p className="text-sm text-gray-600">@{filteredUser.name}</p>
+        <p className="text-sm text-gray-600">@{filteredUser.nameUser}</p>
       </div>
 
       <div className="mt-4">

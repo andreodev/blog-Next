@@ -11,6 +11,7 @@ model user {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   email     String   @unique // Mantém email único sem ser chave primária
   name      String
+  nameUser  String?   
   password  String
   image     String?  
   banner    String?  
@@ -22,10 +23,10 @@ model user {
 model post { 
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   title     String
-  content   String
+  content   String?
+  image     String?
+  comment   String?
   createdAt DateTime @default(now())
-  userEmail String?  // Tornando o campo userEmail opcional (permitindo null)
-  user      user?    @relation(fields: [userEmail], references: [email], name: "UserPosts") // Relação com user
+  userEmail String  // Tornando o campo userEmail obrigatório
+  user      user    @relation(fields: [userEmail], references: [email], name: "UserPosts") // Relação com user
 }
-
-

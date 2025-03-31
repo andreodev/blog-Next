@@ -3,12 +3,13 @@
 import { usePosts } from "@/app/(private)/perfil/hook/useFetch";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import type { PostDto } from "./DTO/postDTO";
 
 
 export default function Post() {
   const { data, status } = useSession();
   const { post, error } = usePosts();
-  const [filteredPosts, setFilteredPosts] = useState<{ id: string; title: string; content: string; createdAt: string; userEmail: string }[]>([]);
+  const [filteredPosts, setFilteredPosts] = useState< PostDto[]>([]);
 
   useEffect(() => {
     if (post && post.length > 0) {

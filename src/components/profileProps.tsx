@@ -4,19 +4,12 @@ import { useUsers } from "@/app/(private)/perfil/hook/useFetch";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { UserDto } from "./DTO/useDTO";
 
 export default function Profile() {
   const { data } = useSession();
   const { users, error } = useUsers();
-  const [filteredUser, setFilteredUser] = useState<{
-    id: string;
-    email: string;
-    name: string;
-    image: string;
-    banner: string;
-    bio: string;
-    location: string;
-  } | null>(null); 
+  const [filteredUser, setFilteredUser] = useState< UserDto | null>(null); 
 
   useEffect(() => {
     if (users && users.length > 0 && data?.user?.email) {

@@ -10,7 +10,7 @@ export default async function HomePage() {
     <div>
       <header>
         <Navbar />
-        <Header imageSrc={bgImage} buttonText="EXPLORAR" text="SEJA BEM VINDO AO MEU PROJETO ANDRU-SOCIAL"/>
+        <Header imageSrc={bgImage} buttonText="EXPLORAR" text="SEJA BEM VINDO AO MEU PROJETO AndruSocial"/>
       </header>
       <main>
         <div >

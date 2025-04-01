@@ -16,18 +16,14 @@ const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
 });
-export default function PublicProfileRoot({
+export default function LoginRoot({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body 
-      className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased`}
-      >
-        <SessionProvider>{children}</SessionProvider>
-      </body>
-    </html>
+    <div className="antialiased">
+      <SessionProvider>{children}</SessionProvider>
+    </div>
   );
 }

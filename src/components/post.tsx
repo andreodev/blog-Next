@@ -5,7 +5,13 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
-export default function AllPosts() {
+interface Props {
+  params: {
+    email: string
+  }
+}
+
+export default function Post( {params}:Props) {
   const { data } = useSession();
   const { post, error } = usePosts();
   const { users } = useUsers();
@@ -25,7 +31,7 @@ export default function AllPosts() {
   useEffect(() => {
     if (post && post.length > 0 && users && users.length > 0) {
       // Filtrando os posts para mostrar apenas os do usuário da sessão
-      const filteredPosts = post.filter((postItem) => postItem.userEmail === data?.user?.email);
+      const filteredPosts = post.filter((postItem) => postItem.userEmail === params.email);
 
       // Associando cada post ao nome e imagem do usuário
       const postsWithUser = filteredPosts.map((postItem) => {
@@ -38,7 +44,7 @@ export default function AllPosts() {
       });
       setPostsWithUserInfo(postsWithUser);
     }
-  }, [post, users, data?.user?.email]); // Adicionado data?.user?.email como dependência
+  }, [post, users, params.email]); 
 
   if (error) {
     console.error("Erro:", error);

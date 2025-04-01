@@ -1,9 +1,10 @@
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 export function usePosts() {
   const [post, setPosts] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
-
+  
   async function fetchPosts() {
     try {
       const response = await fetch("/api/profile/post");
@@ -34,7 +35,7 @@ export function usePosts() {
   }
 
   useEffect(() => {
-    fetchPosts();
+      fetchPosts();
   }, []);
 
   return { post, error };
@@ -75,7 +76,7 @@ export function useUsers() {
   }
 
   useEffect(() => {
-    fetchUsers();
+      fetchUsers();
   }, []);
 
   return { users, error };

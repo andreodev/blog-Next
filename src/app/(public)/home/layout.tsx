@@ -22,12 +22,8 @@ export default function HomeRoot({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body 
-      className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased`}
-      >
-        <SessionProvider>{children}</SessionProvider>
-      </body>
-    </html>
+    <div className="antialiased">
+      <SessionProvider>{children}</SessionProvider>
+    </div>
   );
 }

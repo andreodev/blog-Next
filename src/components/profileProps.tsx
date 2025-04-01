@@ -5,6 +5,8 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { UserDto } from "./DTO/useDTO";
+import { Button } from "./ui/button";
+import Link from "next/link";
 
 interface Props {
   params: {
@@ -15,13 +17,15 @@ interface Props {
 export default function Profile({ params }: Props) {
   const { users, error } = useUsers();
   const [filteredUser, setFilteredUser] = useState<UserDto | null>(null);
+  const {data} = useSession()
 
   useEffect(() => {
+    //POSTS VERIFICAÇÃO
     if (users && users.length > 0 && params.email) {
       const userPosts = users.filter((userItem) => userItem.email === params.email);
       setFilteredUser(userPosts.length > 0 ? userPosts[0] : null);
     }
-  }, [users, params.email]);
+  }, [users, params.email, data]);
 
   if (!filteredUser) {
     return <div>Carregando...</div>;
@@ -75,12 +79,10 @@ export default function Profile({ params }: Props) {
       </div>
 
       <div className="mt-4 flex space-x-3">
-        <button className="px-4 py-1 bg-blue-500 text-white rounded-full hover:bg-blue-600 text-sm">
-          Editar Perfil
-        </button>
-        <button className="px-4 py-1 bg-gray-300 text-gray-800 rounded-full hover:bg-gray-400 text-sm">
-          Ver Posts
-        </button>
+        {/* Verifica se o a página pertece ao dono dessa email */}
+        <Button className={`${filteredUser.email === data?.user?.email ? "bg-black" : "hidden"}`}>
+          {`${filteredUser.email === data?.user?.email ? "Editar Perfil" : ""}`}
+        </Button>
       </div>
     </div>
   );

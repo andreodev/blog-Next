@@ -46,10 +46,10 @@ const Navbar = () => {
             >
               <DropdownMenuItem className=" transition p-2 rounded-md cursor-pointer bg-white text-black">
                 <Button className="bg-white text-black cursor-pointer hover:bg-black hover:text-white">
-                  <UserIcon className="w-4 h-4 mr-2  cursor-pointer" />
                   <Link
                     href={`/perfil/${data?.user?.email}`}
-                  >
+                  > 
+                  <UserIcon className="w-4 h-4 mr-2  cursor-pointer" />
                     Meu Perfil
                   </Link>
                 </Button>

@@ -1,10 +1,11 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
+
 export function usePosts() {
-  const [post, setPosts] = useState<any[]>([]);
+  const [posts, setPosts] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
-  
+
   async function fetchPosts() {
     try {
       const response = await fetch("/api/profile/post");
@@ -14,7 +15,6 @@ export function usePosts() {
       }
 
       const data = await response.json();
-
       setPosts(
         data.map((post: any) => {
           return {
@@ -26,20 +26,20 @@ export function usePosts() {
             createdAt: post.createdAt,
             userEmail: post.userEmail,
           };
-        })
-      );
+        }))
     } catch (error) {
-      setError("Erro ao buscar");
-      console.error("Erro ao buscar eventos: ", error);
+      setError("Erro ao buscar posts");
+      console.error("Erro ao buscar posts:", error);
     }
   }
 
   useEffect(() => {
-      fetchPosts();
+    fetchPosts();
   }, []);
 
-  return { post, error };
+  return { posts, error, fetchPosts }; // Retornamos fetchPosts para chamar manualmente
 }
+
 
 export function useUsers() {
   const [users, setUsers] = useState<any[]>([]);

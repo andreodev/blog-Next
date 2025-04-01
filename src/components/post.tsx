@@ -4,6 +4,7 @@ import { usePosts, useUsers } from "@/app/(private)/perfil/hook/useFetch";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 interface Props {
   params: {
@@ -58,6 +59,7 @@ export default function Post( {params}:Props) {
         postsWithUserInfo.map((postItem) => (
           <div key={postItem.id} className="mb-6">
             <div className="flex items-center space-x-4">
+              <Link href={`/perfil/${postItem.userEmail}`}>
               {/* Avatar */}
               <Image
                 src={postItem.userImage}
@@ -65,7 +67,8 @@ export default function Post( {params}:Props) {
                 width={40}
                 height={40}
                 className="rounded-full"
-              />
+                />
+                </Link>
               <div>
                 {/* Nome do usuário */}
                 <p className="font-semibold text-gray-800">{postItem.userName}</p>

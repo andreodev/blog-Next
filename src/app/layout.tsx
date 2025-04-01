@@ -28,6 +28,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  console.log("Bem vindo Dev Curioso  ")
   return (
     <html lang="en">
       <body

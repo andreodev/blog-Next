@@ -24,12 +24,13 @@ export async function POST(req: Request) {
     }
 
 
+
     const newPost = await prisma.post.create({
       data: {
         title,
         content,
         image,
-        userEmail: session?.user?.email ?? "unknown", // Adicionando o e-mail do usuário
+        userEmail: session?.user?.email, // Adicionando o e-mail do usuário
         createdAt: new Date(), // Criando a data automaticamente
       },
     });

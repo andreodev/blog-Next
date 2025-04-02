@@ -7,9 +7,9 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model user { 
+model user {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  email     String   @unique // Mantém email único sem ser chave primária
+  email     String   @unique
   name      String
   nameUser  String?   
   password  String
@@ -18,15 +18,26 @@ model user {
   bio       String?  
   location  String?  
   posts     post[]   @relation("UserPosts")
+  comments  comment[] @relation("UserComments") // Relação de comentários do usuário
 }
 
-model post { 
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+model post {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
   title     String
   content   String?
   image     String?
-  comment   String?
+  createdAt DateTime  @default(now())
+  userEmail String
+  user      user      @relation(fields: [userEmail], references: [email], name: "UserPosts")
+  comments  comment[] @relation("PostComments") // Relação com os comentários do post
+}
+
+model comment {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  content   String   // Conteúdo do comentário
   createdAt DateTime @default(now())
-  userEmail String  // Tornando o campo userEmail obrigatório
-  user      user    @relation(fields: [userEmail], references: [email], name: "UserPosts") // Relação com user
+  userEmail String   // Email do usuário que fez o comentário
+  postId    String   // ID do post relacionado
+  post      post     @relation(fields: [postId], references: [id], name: "PostComments")
+  user      user     @relation(fields: [userEmail], references: [email], name: "UserComments")
 }

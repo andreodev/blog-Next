@@ -1,7 +1,7 @@
 "use client";
 
 import { signIn } from "next-auth/react";
-import { useState } from "react";  // Para controlar o erro e o sucesso
+import { useState } from "react"; // Para controlar o erro e o sucesso
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -25,9 +25,11 @@ export default function LoginForm() {
     const formData = new FormData(e.currentTarget);
 
     const data = {
-      email: formData.get("email") as string,
+      userName: formData.get("userName") as string,
       password: formData.get("password") as string,
     };
+
+    console.log(data);
 
     const result = await signIn("credentials", {
       ...data,
@@ -41,7 +43,7 @@ export default function LoginForm() {
     } else {
       // Exibe mensagem de sucesso e redireciona após 2 segundos
       setSuccessMessage("Login bem-sucedido! Redirecionando...");
-      
+
       // Aguarda a exibição da mensagem de sucesso antes de redirecionar
       setTimeout(() => {
         window.location.href = "/home"; // Redireciona para a página inicial após 2 segundos
@@ -62,12 +64,12 @@ export default function LoginForm() {
           <form onSubmit={login}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="User">Email</Label>
                 <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  placeholder="emailteste@example.com"
+                  id="user"
+                  name="userName" 
+                  type="text"
+                  placeholder="Digite seu nome de usuário"
                   required
                 />
               </div>

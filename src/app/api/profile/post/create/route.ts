@@ -30,7 +30,7 @@ export async function POST(req: Request) {
         title,
         content,
         image,
-        userEmail: session?.user?.email, // Adicionando o e-mail do usuário
+        userName: session?.user?.name ?? "Unknown User", // Adicionando o e-mail do usuário
         createdAt: new Date(), // Criando a data automaticamente
       },
     });

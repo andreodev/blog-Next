@@ -6,46 +6,60 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { UserDto } from "./DTO/useDTO";
 import { Button } from "./ui/button";
-import Link from "next/link";
+import { useParams } from "next/navigation";
 
-interface Props {
-  params: {
-    email: string;
-  };
-}
+export default function Profile() {
+  const params = useParams();
+  const userName = params?.userName as string | undefined;
 
-export default function Profile({ params }: Props) {
   const { users, error } = useUsers();
+  const { data: session } = useSession();
   const [filteredUser, setFilteredUser] = useState<UserDto | null>(null);
-  const {data} = useSession()
+
+  // 🔍 DEBUG: Verificar valores iniciais
+ 
 
   useEffect(() => {
-    //POSTS VERIFICAÇÃO
-    if (users && users.length > 0 && params.email) {
-      const userPosts = users.filter((userItem) => userItem.email === params.email);
-      setFilteredUser(userPosts.length > 0 ? userPosts[0] : null);
+    if (!users || users.length === 0) return; // Se `users` estiver vazio, não faz nada
+    if (!userName) return; // Se `userName` não existir, não faz nada
+
+    const userFound = users.find((user) => user.userName === userName);
+
+    if (userFound) {
+      setFilteredUser(userFound);
+    } else {
+      setFilteredUser(null);
     }
-  }, [users, params.email, data]);
+  }, [users, userName]);
+
+  if (!userName) {
+    return <div className="text-red-500">Erro: Nome de usuário não encontrado.</div>;
+  }
+
+  if (error) {
+    console.log("❌ Erro ao buscar usuários:", error);
+    return <div className="text-red-500">Erro ao carregar usuário.</div>;
+  }
 
   if (!filteredUser) {
-    return <div>Carregando...</div>;
+    return <div className="text-center text-gray-500">Carregando...</div>;
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-4 bg-white rounded-lg shadow-md">
+    <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md">
       <div className="relative">
         <Image
-          width={100}
-          height={10}
+          width={800}
+          height={200}
           src={
             filteredUser.banner ||
             "https://i.pinimg.com/736x/f1/4c/4c/f14c4c88a836ec9c5f79d313e0d8cd7d.jpg"
           }
           alt="Banner"
-          className="w-full h-32 object-cover rounded-t-lg"
+          className="w-full h-56 object-cover rounded-t-lg"
           priority
         />
-        {/* Imagem do perfil flutuante */}
+
         <div className="absolute left-4 bottom-[-20px]">
           <Image
             width={100}
@@ -55,34 +69,37 @@ export default function Profile({ params }: Props) {
               "https://i.pinimg.com/736x/f1/4c/4c/f14c4c88a836ec9c5f79d313e0d8cd7d.jpg"
             }
             alt="Profile"
-            className="w-20 h-20 rounded-full border-4 border-white"
+            className="w-32 h-32 rounded-full border-4 border-white"
             priority
           />
         </div>
       </div>
 
-      <div className="mt-12">
-        <h1 className="text-xl font-semibold text-gray-800">{filteredUser.name}</h1>
-        <p className="text-sm text-gray-600">@{filteredUser.nameUser}</p>
+      <div className="mt-12 p-6 space-y-6">
+        <div className="flex flex-col">
+          <h1 className="text-2xl font-semibold text-gray-800">{filteredUser.name}</h1>
+          <p className="text-sm text-gray-600">@{filteredUser.userName}</p>
+        </div>
+
+        <div className="space-y-4">
+          <div>
+            <h2 className="text-lg font-medium text-gray-800">Sobre</h2>
+            <p className="text-sm text-gray-600">{filteredUser.bio || "Sem bio"}</p>
+          </div>
+
+          <div>
+            <h2 className="text-lg font-medium text-gray-800">Localização</h2>
+            <p className="text-sm text-gray-600">
+              {filteredUser.location || "Localização não fornecida"}
+            </p>
+          </div>
+        </div>
       </div>
 
-      <div className="mt-4">
-        <h2 className="text-lg font-medium text-gray-800">Sobre</h2>
-        <p className="text-gray-600 text-sm">{filteredUser.bio || "Sem bio"}</p>
-      </div>
-
-      <div className="mt-4">
-        <h2 className="text-lg font-medium text-gray-800">Localização</h2>
-        <p className="text-gray-600 text-sm">
-          {filteredUser.location || "Localização não fornecida"}
-        </p>
-      </div>
-
-      <div className="mt-4 flex space-x-3">
-        {/* Verifica se o a página pertece ao dono dessa email */}
-        <Button className={`${filteredUser.email === data?.user?.email ? "bg-black" : "hidden"}`}>
-          {`${filteredUser.email === data?.user?.email ? "Editar Perfil" : ""}`}
-        </Button>
+      <div className="mt-4 flex space-x-3 p-2">
+        {filteredUser.name === session?.user?.name && (
+          <Button className="bg-black">Editar Perfil</Button>
+        )}
       </div>
     </div>
   );

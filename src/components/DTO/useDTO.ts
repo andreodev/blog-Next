@@ -1,7 +1,7 @@
 export interface UserDto {
   id: string;
   email: string;
-  nameUser: string;
+  userName: string;
   name: string;
   image: string;
   banner: string;

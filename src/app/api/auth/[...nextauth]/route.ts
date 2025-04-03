@@ -16,38 +16,45 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: { label: "Email", type: "email" },
+        userName: { label: "User", type: "user" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials) return null;
+        if (!credentials?.userName || !credentials?.password) {
+          throw new Error("Nome de usuário e senha são obrigatórios!");
+        }
 
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email },
+          where: { nameUser: credentials.userName },
         });
+
         if (!user) {
           throw new Error("Usuário não encontrado!");
         }
 
-        const isValid = await bcrypt.compare(credentials.password, user.password);
+        const isValid = await bcrypt.compare(
+          credentials.password,
+          user.password
+        );
         if (!isValid) {
           throw new Error("Senha incorreta!");
         }
 
         return {
           id: user.id,
-          name: user.name,
+          name: user.nameUser,
+          nameUser: user.name, 
           email: user.email,
-          image: user.image || "https://i.pinimg.com/736x/7f/e4/25/7fe425baaa808391cd7e24f091a9967b.jpg",
+          image: user.image || "/default-avatar.png",
         };
       },
     }),
   ],
   session: {
     strategy: "jwt",
-    maxAge: 30 * 60, 
+    maxAge: 30 * 60,
   },
-  
+
   callbacks: {
     async jwt({ token, user }) {
       if (user) {

@@ -45,7 +45,7 @@ export default function NewPost({ refreshPosts }: any) {
 
   return (
     <>
-      <div className="p-3 rounded-lg shadow-md cursor-pointer text-gray-300 bg-gray-300 hover:bg-gray-50" onClick={() => setShowModal(true)}>
+      <div className="p-3 rounded-lg shadow-md cursor-pointer text-gray-300 bg-gray-400 hover:bg-gray-300" onClick={() => setShowModal(true)}>
         <p className="text-gray-500">O que você está pensando?</p>
       </div>
 

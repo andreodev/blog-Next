@@ -1,97 +1,110 @@
 "use client";
 
-import { usePosts, useUsers } from "@/app/(private)/perfil/hook/useFetch";
+import {
+  usePosts,
+  useUsers,
+  useComments,
+} from "@/app/(private)/perfil/hook/useFetch";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
+import NewPost from "@/components/newPost";
+import PostCard from "@/components/postCard";
+import PostModal from "@/components/postModal";
+import { useParams } from "next/navigation";
 
-interface Props {
-  params: {
-    email: string
-  }
-}
 
-export default function Post( {params}:Props) {
-  const { data } = useSession();
-  const { post, error } = usePosts();
+export default function PostProfile() {
+  const { posts, error, fetchPosts } = usePosts();
   const { users } = useUsers();
-  const [postsWithUserInfo, setPostsWithUserInfo] = useState<
-    {
-      id: string;
-      title: string;
-      content: string;
-      createdAt: string;
-      userEmail: string;
-      userName: string;
-      userImage: string;
-      image: string;
-    }[]
-  >([]);
+  const { comments } = useComments();
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const [postsWithUserInfo, setPostsWithUserInfo] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedPost, setSelectedPost] = useState<any | null>(null);
+  const params = useParams();
 
+
+  //verifica se está logado ou não
   useEffect(() => {
-    if (post && post.length > 0 && users && users.length > 0) {
-      // Filtrando os posts para mostrar apenas os do usuário da sessão
-      const filteredPosts = post.filter((postItem) => postItem.userEmail === params.email);
+    if (status === "unauthenticated") {
+      router.push("/login");
+    }
 
-      // Associando cada post ao nome e imagem do usuário
+
+    if (session?.user?.email?.length && posts?.length) {
+      //filtrar apenas usuario da sessão
+      const filteredPosts = posts.filter(
+        (postItem) => postItem.userName === params.userName 
+      )
+
       const postsWithUser = filteredPosts.map((postItem) => {
-        const user = users.find((userItem) => userItem.email === postItem.userEmail);
+        const user = users.find(
+          (userItem) => userItem.userName === params.userName
+        );
         return {
           ...postItem,
           userName: user?.name || "Desconhecido",
-          userImage: user?.image || "https://i.pinimg.com/736x/8a/9f/ac/8a9fac6159e698818b553eac700e4a57.jpg",
+          userImage:
+            user?.image ||
+            "https://i.pinimg.com/736x/8a/9f/ac/8a9fac6159e698818b553eac700e4a57.jpg",
         };
       });
-      setPostsWithUserInfo(postsWithUser);
+
+      const sortedPosts = postsWithUser.sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+
+      const postsWithComments = sortedPosts.map((postItem) => {
+        const postComments = comments.filter(
+          (comment) => comment.postId === postItem.id
+        );
+        return {
+          ...postItem,
+          comments: postComments,
+        };
+      });
+
+      setPostsWithUserInfo(postsWithComments);
+      setIsLoading(false);
     }
-  }, [post, users, params.email]); 
+  }, [posts, users, status, router, comments, session]);
 
   if (error) {
-    console.error("Erro:", error);
+    return (
+      <p className="text-red-500 text-center">
+        Ocorreu um erro ao carregar os posts.
+      </p>
+    );
   }
 
+  const handleOpenModal = (post: any) => {
+    setSelectedPost(post);
+    setShowModal(true);
+  };
+  
+
+  if (error) return <p className="text-red-500 text-center">Ocorreu um erro ao carregar os posts.</p>;
+  if (isLoading) return <p className="text-center text-gray-500">Carregando posts...</p>;
+
   return (
-    <div className="max-w-4xl mx-auto p-4 bg-white rounded-lg shadow-md">
+    <div className="max-w-lg mx-auto rounded-lg space-y-6" id="Post">
+      <div className="p-6 bg-white rounded-lg shadow-sm">
+        <NewPost refreshPosts={fetchPosts} />
+      </div>
+
       {postsWithUserInfo.length === 0 ? (
         <p className="text-center text-gray-500">Nenhum post disponível.</p>
       ) : (
-        postsWithUserInfo.map((postItem) => (
-          <div key={postItem.id} className="mb-6">
-            <div className="flex items-center space-x-4">
-              <Link href={`/perfil/${postItem.userEmail}`}>
-              {/* Avatar */}
-              <Image
-                src={postItem.userImage}
-                alt={postItem.userName}
-                width={40}
-                height={40}
-                className="rounded-full"
-                />
-                </Link>
-              <div>
-                {/* Nome do usuário */}
-                <p className="font-semibold text-gray-800">{postItem.userName}</p>
-                {/* Data de criação do post */}
-                <p className="text-sm text-gray-500">
-                  {new Date(postItem.createdAt).toLocaleDateString()}
-                </p>
-              </div>
-            </div>
-            <div className="mt-4">
-              {/* Conteúdo do post */}
-              <h2 className="text-lg font-semibold text-gray-800">{postItem.title}</h2>
-              <p className="text-gray-600">{postItem.content}</p>
-              <Image
-                alt="Imagem do post"
-                src={postItem.image}
-                width={100}
-                height={100}
-              />
-            </div>
-          </div>
+        postsWithUserInfo.map((post) => (
+          <PostCard key={post.id} post={post} onOpenModal={handleOpenModal} />
+
         ))
       )}
+
+      {showModal && selectedPost && <PostModal post={selectedPost} onClose={() => setShowModal(false)} />}
     </div>
   );
 }

@@ -23,7 +23,7 @@ export function usePosts() {
             image: post.image,
             comment: post.comment,
             createdAt: post.createdAt,
-            userEmail: post.userEmail,
+            userName: post.userName,
           };
         })
       );
@@ -59,7 +59,7 @@ export function useUsers() {
           return {
             id: user.id,
             email: user.email,
-            nameUser: user.name,
+            userName: user.nameUser,
             name: user.name,
             image: user.image,
             banner: user.banner,

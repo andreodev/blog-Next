@@ -12,11 +12,14 @@ import ButtonLogout from "./buttonLogout";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { Button } from "./ui/button";
+import { useParams } from "next/navigation";
+
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isAccountOpen, setIsAccountOpen] = useState(false); // Novo estado para abrir/fechar conta no mobile
   const { data, status } = useSession();
+  const params = useParams()
 
   return (
     <nav className="bg-gray-800 text-white p-4 shadow-lg">
@@ -46,7 +49,7 @@ const Navbar = () => {
             >
               <DropdownMenuItem className=" transition p-2 rounded-md cursor-pointer bg-white text-black">
                 <Button className="bg-white text-black cursor-pointer hover:bg-black hover:text-white">
-                  <Link href={`/perfil/${data?.user?.email}`}>
+                  <Link href={`/perfil/${data?.user?.name}`}>
                     <UserIcon className="w-4 h-4 mr-2  cursor-pointer" />
                     Meu Perfil
                   </Link>

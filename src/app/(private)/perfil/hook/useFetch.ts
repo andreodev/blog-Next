@@ -85,36 +85,34 @@ export function useComments() {
   const [comments, setComments] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
 
-  async function fetchComments() {
+  async function fetchComments(postId: string) {
     try {
-      const response = await fetch("/api/profile/post/comments");
+      const response = await fetch(`/api/profile/post/comments?postId=${postId}`);
 
       if (!response.ok) {
-        throw new Error("Erro ao buscar comments");
+        throw new Error("Erro ao buscar comentários");
       }
 
       const data = await response.json();
 
+      // Filtra apenas os comentários do post correspondente
+      const filteredComments = data.filter((comment: any) => comment.postId === postId);
+
       setComments(
-        data.map((comment: any) => {
-          return {
-            id: comment.id,
-            userEmail: comment.userEmail,
-            postId: comment.postId,
-            content: comment.content,
-            createdAt: comment.createdAt,
-          };
-        })
+        filteredComments.map((comment: any) => ({
+          id: comment.id,
+          postId: comment.postId,
+          content: comment.content,
+          createdAt: comment.createdAt,
+          image: comment.image,
+          userName: comment.userName,
+        }))
       );
     } catch (error) {
       setError("Erro ao buscar");
-      console.error("Erro ao buscar eventos: ", error);
+      console.error("Erro ao buscar comentários: ", error);
     }
   }
 
-  useEffect(() => {
-    fetchComments();
-  }, []);
-
-  return { comments, error };
+  return { comments, error, fetchComments }; // sem useEffect automático
 }

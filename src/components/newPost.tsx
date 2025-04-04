@@ -19,7 +19,9 @@ export default function NewPost({ refreshPosts }: any) {
     };
   }, [showModal]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setPost({ ...post, [e.target.name]: e.target.value });
   };
 
@@ -45,16 +47,25 @@ export default function NewPost({ refreshPosts }: any) {
 
   return (
     <>
-      <div className="p-3 rounded-lg shadow-md cursor-pointer text-gray-300 bg-gray-400 hover:bg-gray-300" onClick={() => setShowModal(true)}>
+      <div
+        className="p-3 rounded-lg shadow-md cursor-pointer text-gray-300 bg-gray-400 hover:bg-gray-300"
+        onClick={() => setShowModal(true)}
+      >
         <p className="text-gray-500">O que você está pensando?</p>
       </div>
 
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center   bg-[#050505b2] pointer-events-auto">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="bg-white p-6 rounded-lg shadow-lg w-96"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold">Criar publicação</h2>
-              <Button onClick={() => setShowModal(false)} className="p-2 rounded-full hover:bg-gray-200">
+              <Button
+                onClick={() => setShowModal(false)}
+                className="p-2 rounded-full hover:bg-gray-200"
+              >
                 <X className="w-5 h-5 cursor-pointer" />
               </Button>
             </div>
@@ -93,7 +104,10 @@ export default function NewPost({ refreshPosts }: any) {
                   className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
               )}
-              <Button type="submit" className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition">
+              <Button
+                type="submit"
+                className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition"
+              >
                 Publicar
               </Button>
             </form>

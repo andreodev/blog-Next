@@ -14,7 +14,7 @@ export default function LoginPage() {
   useEffect(() => {
     if (session && !loading) {
       setLoading(true); // Evita execução duplicada
-      
+
       // Dispara os confetes
       confetti({
         particleCount: 150,

@@ -67,7 +67,7 @@ export default function LoginForm() {
                 <Label htmlFor="User">Email</Label>
                 <Input
                   id="user"
-                  name="userName" 
+                  name="userName"
                   type="text"
                   placeholder="Digite seu nome de usuário"
                   required

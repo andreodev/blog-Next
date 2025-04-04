@@ -1,20 +1,17 @@
 import AllPosts from "@/components/allPosts";
 import Footer from "@/components/footer";
-import Navbar from "@/components/navbar";
+import Sidebar from "@/components/navbar";
 
-export default async function HomePage() {
+export default function HomePage() {
   return (
-    <div className="">
-      <header>
-        <Navbar />
-      </header>
-      <main>
-        <div className="
-        mt-4">
+    <div className="flex min-h-screen">
+      <Sidebar />
+      <div className="flex-1 ml-0 ">
+        <main className="p-4">
           <AllPosts />
-        </div>
-      </main>
-      <Footer />
+        </main>
+        <Footer />
+      </div>
     </div>
   );
 }

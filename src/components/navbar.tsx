@@ -2,125 +2,87 @@
 
 import { useState } from "react";
 import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
-import { ChevronDownIcon, LogOut, UserIcon } from "lucide-react";
-import ButtonLogout from "./buttonLogout";
+  LogOut,
+  UserIcon,
+  Menu,
+  HomeIcon,
+} from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-import { Button } from "./ui/button";
-import { useParams } from "next/navigation";
+import clsx from "clsx";
 
-
-const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isAccountOpen, setIsAccountOpen] = useState(false); // Novo estado para abrir/fechar conta no mobile
-  const { data, status } = useSession();
-  const params = useParams()
+const Sidebar = () => {
+  const [isOpen, setIsOpen] = useState(false); // Inicia fechado no mobile
+  const { data } = useSession();
 
   return (
-    <nav className="bg-gray-800 text-white p-4 shadow-lg">
-      <div className="container mx-auto flex items-center justify-between">
-        <Link
-          href={"/home"}
-          className="text-2xl font-semibold transition-all ease-initial duration-600"
-        >
-          AndruSocial
-        </Link>
+    <>
+      {/* Botão de abrir sidebar no mobile */}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="md:hidden  top-4 left-4 bg-gray-900 text-white rounded-md shadow-md"
+      >
+        <Menu />
+      </button>
 
-        {/* Menu Desktop */}
-        <div className="hidden md:flex space-x-6">
-          <Link href="/home" className="hover:text-gray-400 transition">
-            Home
-          </Link>
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <div className="flex items-center space-x-2 cursor-pointer hover:text-gray-400 transition">
-                <span>Conta</span>
-                <ChevronDownIcon className="w-4 h-4" />
-              </div>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              align="start"
-              className="bg-white text-black shadow-lg rounded-lg"
-            >
-              <DropdownMenuItem className=" transition p-2 rounded-md cursor-pointer bg-white text-black">
-                <Button className="bg-white text-black cursor-pointer hover:bg-black hover:text-white">
-                  <Link href={`/perfil/${data?.user?.name}`}>
-                    <UserIcon className="w-4 h-4 mr-2  cursor-pointer" />
-                    Meu Perfil
-                  </Link>
-                </Button>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="transition p-2 rounded-md ">
-                <Button
-                  onClick={() => signOut({ callbackUrl: "/login" })}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white text-black shadow-md transition duration-300 hover:bg-black hover:text-white cursor-pointer w-full"
-                >
-                  <LogOut className="w-5 h-5" />
-                  Logout
-                </Button>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-
-        {/* Botão Mobile */}
-        <div className="md:hidden">
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="text-white focus:outline-none"
-          >
-            {isOpen ? "Fechar" : "Menu"}
-          </button>
-        </div>
-      </div>
-
-      {/* Menu Mobile */}
+      {/* Overlay no mobile quando sidebar está aberta */}
       {isOpen && (
-        <div className="md:hidden mt-4 bg-gray-900 p-4 rounded-lg shadow-md space-y-3">
+        <div
+          onClick={() => setIsOpen(false)}
+          className="md:hidden fixed inset-0 bg-black/50 z-40"
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside
+        className={clsx(
+          "bg-gray-900 text-white fixed top-0 left-0 h-full z-50 p-6 flex flex-col justify-between transition-all duration-300",
+          isOpen ? "w-64" : "w-0 overflow-hidden",
+          "md:w-64 md:static md:h-auto md:flex"
+        )}
+      >
+        <div className="space-y-6">
+          {/* Logo */}
           <Link
             href="/home"
-            className="block hover:text-gray-400 transition p-2"
+            className="text-2xl font-bold block hover:text-gray-400"
           >
-            Home
+            Viewreo
           </Link>
 
-          {/* Conta - Versão Mobile */}
-          <div className="border-t border-gray-700 pt-2">
-            <button
-              onClick={() => setIsAccountOpen(!isAccountOpen)}
-              className="flex items-center justify-between w-full text-left p-2 hover:text-gray-400 transition"
+          {/* Navegação */}
+          <nav className="pl-2 space-y-2">
+            <Link
+              href="/home"
+              className="flex items-center gap-2 py-2 hover:text-gray-400"
             >
-              <span>Conta</span>
-              <ChevronDownIcon
-                className={`w-4 h-4 transition-transform ${
-                  isAccountOpen ? "rotate-180" : ""
-                }`}
-              />
+              <HomeIcon className="w-4 h-4" />
+              Home
+            </Link>
+            <Link
+              href={`/perfil/${data?.user?.name}`}
+              className="flex items-center gap-2 py-2 hover:text-gray-400"
+            >
+              <UserIcon className="w-4 h-4" />
+              Meu Perfil
+            </Link>
+            <button
+              onClick={() => signOut({ callbackUrl: "/login" })}
+              className="flex items-center gap-2 py-2 hover:text-gray-400 cursor-pointer"
+            >
+              <LogOut className="w-4 h-4" />
+              Logout
             </button>
-            {isAccountOpen && (
-              <div className="mt-2 space-y-2 bg-gray-800 p-2 rounded-md">
-                <Link
-                  href={`/perfil/${data?.user?.email}`}
-                  className="flex items-center gap-2 hover:text-gray-400 transition"
-                >
-                  <UserIcon className="w-4 h-4 cursor-pointer" />
-                  Meu Perfil
-                </Link>
-                <div className="flex items-center gap-2 cursor-pointer">
-                  <ButtonLogout />
-                </div>
-              </div>
-            )}
-          </div>
+          </nav>
         </div>
-      )}
-    </nav>
+
+        {/* Rodapé */}
+        <div className="text-sm text-gray-400 mt-6 hidden md:block">
+          © {new Date().getFullYear()} Viewreo.v1.0
+        </div>
+      </aside>
+    </>
   );
 };
 
-export default Navbar;
+export default Sidebar;

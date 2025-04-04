@@ -1,6 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import Modal from "./Modal";
+import NewComment from "./newComment";
+import { useComments } from "@/app/(private)/perfil/hook/useFetch";
+import { useEffect } from "react";
 
 interface PostModalProps {
   post: any;
@@ -8,16 +11,21 @@ interface PostModalProps {
 }
 
 export default function PostModal({ post, onClose }: PostModalProps) {
+  const { comments, fetchComments } = useComments();
+
+  useEffect(() => {
+    fetchComments(post.id);
+  }, [post.id]);
+
   return (
     <Modal onClose={onClose}>
-      <div className="bg-white rounded-lg shadow-lg p-6 max-w-lg mx-auto">
+      <div className="rounded-lg shadow-lg p-6 max-w-lg mx-auto">
         <h1 className="text-center font-bold text-2xl text-gray-900 mb-3">
           Post de {post.userName}
         </h1>
         <hr className="border-gray-300" />
-
         <div className="flex items-center space-x-3 mt-3">
-          <Link href={`/perfil/${post.userEmail}`}>
+          <Link href={`/perfil/${post.userName}`}>
             <Image
               src={post.userImage || "/default-avatar.png"}
               alt={post.userName || "avatar do usuário"}
@@ -28,7 +36,7 @@ export default function PostModal({ post, onClose }: PostModalProps) {
           </Link>
           <div>
             <Link
-              href={`/perfil/${post.userEmail}`}
+              href={`/perfil/${post.userName}`}
               className="text-blue-600 font-semibold hover:underline"
             >
               {post.userName}
@@ -38,10 +46,6 @@ export default function PostModal({ post, onClose }: PostModalProps) {
             </p>
           </div>
         </div>
-
-        <h2 className="text-xl font-bold text-gray-900 mt-4">{post.title}</h2>
-        <p className="text-gray-700 mt-2">{post.content}</p>
-
         {post.image && (
           <div className="mt-4">
             <Image
@@ -53,19 +57,47 @@ export default function PostModal({ post, onClose }: PostModalProps) {
             />
           </div>
         )}
-        <hr className="border border-gray-600 mt-2.5" />
 
-        <div className="bg-gray-50 p-4 rounded-md shadow-sm mt-5">
-          <h3 className="text-lg font-semibold text-gray-800 mb-3">Comentários</h3>
-          <div className="space-y-3">
-            {post.comments.length > 0 ? (
-              post.comments.map((comment: any) => (
+        <h2 className="text-xl font-bold text-gray-900 mt-4">{post.title}</h2>
+        <p className="text-gray-700 mt-2">{post.content}</p>
+
+        <hr className="border-2 border-gray-600 mt-5" />
+
+        <div className="p-4 rounded-md mt-5">
+          <h3 className="text-lg font-semibold text-gray-800 mb-3">
+            Comentários
+          </h3>
+          <div className="space-y-6">
+            {comments.length > 0 ? (
+              comments.map((comment: any) => (
                 <div
                   key={comment.id}
-                  className="p-3 bg-white rounded-md shadow-sm border border-gray-200"
+                  className="p-4 bg-white rounded-lg shadow-md border border-gray-200 transition-transform hover:scale-105"
                 >
-                  <p className="font-semibold text-gray-800">{comment.nameUser}</p>
-                  <p className="text-gray-700">{comment.content}</p>
+                  <div className="flex items-center space-x-3">
+                    <Link href={`/perfil/${post.userName}`}>
+                      <Image
+                        src={comment.image || "/default-avatar.png"}
+                        alt={comment.userName || "avatar do usuário"}
+                        width={40}
+                        height={40}
+                        className="rounded-full border border-gray-300 shadow-sm"
+                      />
+                    </Link>
+                    <Link href={`/perfil/${post.userName}`}>
+                      <div>
+                        <p className="font-semibold text-gray-800">
+                          {comment.nameUser}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          @{comment.userName}
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                  <p className="text-sm text-gray-600 mt-2">
+                    {comment.content}
+                  </p>
                   <p className="text-xs text-gray-400 mt-1">
                     {new Date(comment.createdAt).toLocaleDateString()}
                   </p>
@@ -74,6 +106,10 @@ export default function PostModal({ post, onClose }: PostModalProps) {
             ) : (
               <p className="text-gray-500 text-sm">Nenhum comentário ainda.</p>
             )}
+            <NewComment
+              postId={post.id}
+              refreshComments={() => fetchComments(post.id)}
+            />
           </div>
         </div>
       </div>

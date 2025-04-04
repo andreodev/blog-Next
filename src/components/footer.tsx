@@ -1,11 +1,11 @@
 // components/Footer.tsx
-"use client"
+"use client";
 import { GithubIcon } from "lucide-react";
 import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 text-white py-8 mt-16" id="footer">
+    <footer className="bg-white text-white py-8 mt-16" id="footer">
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="flex flex-col items-center md:items-start mb-6 md:mb-0">

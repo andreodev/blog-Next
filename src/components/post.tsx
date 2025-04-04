@@ -13,7 +13,6 @@ import PostCard from "@/components/postCard";
 import PostModal from "@/components/postModal";
 import { useParams } from "next/navigation";
 
-
 export default function PostProfile() {
   const { posts, error, fetchPosts } = usePosts();
   const { users } = useUsers();
@@ -26,19 +25,17 @@ export default function PostProfile() {
   const [selectedPost, setSelectedPost] = useState<any | null>(null);
   const params = useParams();
 
-
   //verifica se está logado ou não
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/login");
     }
 
-
     if (session?.user?.email?.length && posts?.length) {
       //filtrar apenas usuario da sessão
       const filteredPosts = posts.filter(
-        (postItem) => postItem.userName === params.userName 
-      )
+        (postItem) => postItem.userName === params.userName
+      );
 
       const postsWithUser = filteredPosts.map((postItem) => {
         const user = users.find(
@@ -46,7 +43,7 @@ export default function PostProfile() {
         );
         return {
           ...postItem,
-          userName: user?.name || "Desconhecido",
+          userName: postItem.userName || "Desconhecido",
           userImage:
             user?.image ||
             "https://i.pinimg.com/736x/8a/9f/ac/8a9fac6159e698818b553eac700e4a57.jpg",
@@ -54,7 +51,8 @@ export default function PostProfile() {
       });
 
       const sortedPosts = postsWithUser.sort(
-        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       );
 
       const postsWithComments = sortedPosts.map((postItem) => {
@@ -84,10 +82,15 @@ export default function PostProfile() {
     setSelectedPost(post);
     setShowModal(true);
   };
-  
 
-  if (error) return <p className="text-red-500 text-center">Ocorreu um erro ao carregar os posts.</p>;
-  if (isLoading) return <p className="text-center text-gray-500">Carregando posts...</p>;
+  if (error)
+    return (
+      <p className="text-red-500 text-center">
+        Ocorreu um erro ao carregar os posts.
+      </p>
+    );
+  if (isLoading)
+    return <p className="text-center text-gray-500">Carregando posts...</p>;
 
   return (
     <div className="max-w-lg mx-auto rounded-lg space-y-6" id="Post">
@@ -100,11 +103,12 @@ export default function PostProfile() {
       ) : (
         postsWithUserInfo.map((post) => (
           <PostCard key={post.id} post={post} onOpenModal={handleOpenModal} />
-
         ))
       )}
 
-      {showModal && selectedPost && <PostModal post={selectedPost} onClose={() => setShowModal(false)} />}
+      {showModal && selectedPost && (
+        <PostModal post={selectedPost} onClose={() => setShowModal(false)} />
+      )}
     </div>
   );
 }

@@ -38,6 +38,7 @@ model comment {
   createdAt DateTime @default(now())
   userName  String   // Agora a referência é pelo nameUser
   postId    String   
+  image     String?
   post      post     @relation(fields: [postId], references: [id], name: "PostComments")
   user      user     @relation(fields: [userName], references: [nameUser], name: "UserComments")
 }

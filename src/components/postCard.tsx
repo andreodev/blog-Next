@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./ui/button";
+import { useSession } from "next-auth/react";
 
 interface PostCardProps {
   post: any;
@@ -12,7 +13,7 @@ export default function PostCard({ post, onOpenModal }: PostCardProps) {
     <div className="border rounded-lg shadow-md bg-white hover:shadow-lg transition-shadow">
       <div className="flex flex-col text-start">
         <div className="flex items-center space-x-2 p-2">
-          <Link href={`/perfil/${post.userEmail}`}>
+          <Link href={`/perfil/${post.userName}`}>
             <Image
               src={post.userImage || "/default-avatar.png"}
               alt={post.userName || "avatar do usuario"}
@@ -24,7 +25,7 @@ export default function PostCard({ post, onOpenModal }: PostCardProps) {
           </Link>
           <div className="flex flex-col p-2">
             <Link
-              href={`/perfil/${post.userEmail}`}
+              href={`/perfil/${post.userName}`}
               className="text-blue-600 font-semibold hover:underline"
             >
               {post.userName}
@@ -34,7 +35,6 @@ export default function PostCard({ post, onOpenModal }: PostCardProps) {
             </p>
           </div>
         </div>
-        <p className="font-medium text-gray-700 text-lg p-1">{post.title}</p>
         {post.image && (
           <div className="flex justify-center my-1">
             <Image
@@ -45,6 +45,8 @@ export default function PostCard({ post, onOpenModal }: PostCardProps) {
             />
           </div>
         )}
+        <p className="font-medium text-gray-700 text-lg p-1">{post.title}</p>
+        <p className="font-medium text-gray-700 text-lg p-3">{post.content}</p>
         <div className="p-2 flex justify-center">
           <Button
             onClick={() => onOpenModal(post)}

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import type { StaticImageData } from "next/image";
 import { Card, CardContent, CardFooter } from "./ui/card";

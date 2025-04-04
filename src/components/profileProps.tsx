@@ -17,7 +17,6 @@ export default function Profile() {
   const [filteredUser, setFilteredUser] = useState<UserDto | null>(null);
 
   // 🔍 DEBUG: Verificar valores iniciais
- 
 
   useEffect(() => {
     if (!users || users.length === 0) return; // Se `users` estiver vazio, não faz nada
@@ -33,7 +32,9 @@ export default function Profile() {
   }, [users, userName]);
 
   if (!userName) {
-    return <div className="text-red-500">Erro: Nome de usuário não encontrado.</div>;
+    return (
+      <div className="text-red-500">Erro: Nome de usuário não encontrado.</div>
+    );
   }
 
   if (error) {
@@ -46,7 +47,7 @@ export default function Profile() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md">
+    <div className="max-w-4xl mx-auto rounded-lg shadow-md">
       <div className="relative">
         <Image
           width={800}
@@ -75,16 +76,20 @@ export default function Profile() {
         </div>
       </div>
 
-      <div className="mt-12 p-6 space-y-6">
+      <div className=" p-6 space-y-6">
         <div className="flex flex-col">
-          <h1 className="text-2xl font-semibold text-gray-800">{filteredUser.name}</h1>
+          <h1 className="text-2xl font-semibold text-gray-800">
+            {filteredUser.name}
+          </h1>
           <p className="text-sm text-gray-600">@{filteredUser.userName}</p>
         </div>
 
         <div className="space-y-4">
           <div>
             <h2 className="text-lg font-medium text-gray-800">Sobre</h2>
-            <p className="text-sm text-gray-600">{filteredUser.bio || "Sem bio"}</p>
+            <p className="text-sm text-gray-600">
+              {filteredUser.bio || "Sem bio"}
+            </p>
           </div>
 
           <div>

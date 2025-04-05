@@ -29,7 +29,6 @@ export default function LoginForm() {
       password: formData.get("password") as string,
     };
 
-    console.log(data);
 
     const result = await signIn("credentials", {
       ...data,

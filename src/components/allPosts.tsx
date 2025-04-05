@@ -53,10 +53,22 @@ export default function AllPosts() {
     }
   }, [status, router]);
 
+  // Impede scroll no body quando o modal está aberto
+  useEffect(() => {
+    if (showModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [showModal]);
+
   // Processa os posts com user info e comentários
   const enhancedPosts: EnhancedPost[] = useMemo(() => {
     if (!posts?.length || !users?.length) return [];
-
 
     const postsWithUser = posts.map((post) => {
       const user = users.find((u) => u.userName === post.userName);

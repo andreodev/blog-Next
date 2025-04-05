@@ -78,7 +78,7 @@ export function useUsers() {
     fetchUsers();
   }, []);
 
-  return { users, error };
+  return { users, error, fetchUsers }; // ✅ Agora exporta fetchUsers
 }
 
 export function useComments() {

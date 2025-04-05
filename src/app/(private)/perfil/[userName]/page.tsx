@@ -22,7 +22,7 @@ export default async function Perfil({ params }: PropsParams) {
         <Sidebar />
       </div>
 
-      <main className="ml-64 w-full max-h-screen overflow-y-auto p-6">
+      <main className="ml-64 w-full max-h-screen overflow-y-auto ">
         <Profile />
         <div className="mt-6">
           <Post />

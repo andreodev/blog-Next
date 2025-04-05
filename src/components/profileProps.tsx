@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { UserDto } from "./DTO/useDTO";
 import { Button } from "./ui/button";
 import { useParams } from "next/navigation";
+import ConfigProfile from "./profileEditModal";
 
 export default function Profile() {
   const params = useParams();
@@ -15,12 +16,11 @@ export default function Profile() {
   const { users, error } = useUsers();
   const { data: session } = useSession();
   const [filteredUser, setFilteredUser] = useState<UserDto | null>(null);
-
-  // 🔍 DEBUG: Verificar valores iniciais
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    if (!users || users.length === 0) return; // Se `users` estiver vazio, não faz nada
-    if (!userName) return; // Se `userName` não existir, não faz nada
+    if (!users || users.length === 0) return;
+    if (!userName) return;
 
     const userFound = users.find((user) => user.userName === userName);
 
@@ -46,8 +46,12 @@ export default function Profile() {
     return <div className="text-center text-gray-500">Carregando...</div>;
   }
 
+  const handleOpenModal = () => {
+    setShowModal(true);
+  };
+
   return (
-    <div className="max-w-4xl mx-auto rounded-lg shadow-md">
+    <div className="max-w-4xl mx-auto rounded-lg shadow-md bg-[#f5e9e9]">
       <div className="relative">
         <Image
           width={800}
@@ -57,7 +61,7 @@ export default function Profile() {
             "https://i.pinimg.com/736x/f1/4c/4c/f14c4c88a836ec9c5f79d313e0d8cd7d.jpg"
           }
           alt="Banner"
-          className="w-full h-56 object-cover rounded-t-lg"
+          className="w-full h-56 object-cover"
           priority
         />
 
@@ -70,13 +74,13 @@ export default function Profile() {
               "https://i.pinimg.com/736x/f1/4c/4c/f14c4c88a836ec9c5f79d313e0d8cd7d.jpg"
             }
             alt="Profile"
-            className="w-32 h-32 rounded-full border-4 border-white"
+            className="w-32 h-32 rounded-full border-4 border-black"
             priority
           />
         </div>
       </div>
 
-      <div className=" p-6 space-y-6">
+      <div className="p-6 space-y-6">
         <div className="flex flex-col">
           <h1 className="text-2xl font-semibold text-gray-800">
             {filteredUser.name}
@@ -99,11 +103,27 @@ export default function Profile() {
             </p>
           </div>
         </div>
-      </div>
 
-      <div className="mt-4 flex space-x-3 p-2">
-        {filteredUser.name === session?.user?.name && (
-          <Button className="bg-black">Editar Perfil</Button>
+        {/* Mostrar botão de editar somente se for o dono */}
+        {session?.user?.email === filteredUser.email && (
+          <>
+            <Button
+              onClick={() => {
+                handleOpenModal();
+              }}
+              className="cursor-pointer p-2"
+            >
+              Configurar Perfil
+            </Button>
+            
+
+            {showModal && (
+              <ConfigProfile
+                user={filteredUser}
+                onClose={() => setShowModal(false)}
+              />
+            )}
+          </>
         )}
       </div>
     </div>

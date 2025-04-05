@@ -4,6 +4,7 @@ import Modal from "./Modal";
 import NewComment from "./newComment";
 import { useComments } from "@/app/(private)/perfil/hook/useFetch";
 import { useEffect } from "react";
+import { motion } from "framer-motion"; // Importando o framer-motion
 
 interface PostModalProps {
   post: any;
@@ -19,7 +20,13 @@ export default function PostModal({ post, onClose }: PostModalProps) {
 
   return (
     <Modal onClose={onClose}>
-      <div className="rounded-lg shadow-lg p-6 max-w-lg mx-auto">
+      {/* Animação no conteúdo do modal */}
+      <motion.div
+        className="rounded-lg shadow-lg p-6 max-w-lg mx-auto"
+        initial={{ opacity: 0, scale: 0.95 }} // Inicializando com opacidade baixa e escala pequena
+        animate={{ opacity: 1, scale: 1 }} // Finaliza com opacidade 100% e escala normal
+        transition={{ duration: 0.3 }} // Duração da animação
+      >
         <h1 className="text-center font-bold text-2xl text-gray-900 mb-3">
           Post de {post.userName}
         </h1>
@@ -75,7 +82,7 @@ export default function PostModal({ post, onClose }: PostModalProps) {
                   className="p-4 bg-white rounded-lg shadow-md border border-gray-200 transition-transform hover:scale-105"
                 >
                   <div className="flex items-center space-x-3">
-                    <Link href={`/perfil/${post.userName}`}>
+                    <Link href={`/perfil/${comment.userName}`}>
                       <Image
                         src={comment.image || "/default-avatar.png"}
                         alt={comment.userName || "avatar do usuário"}
@@ -84,7 +91,7 @@ export default function PostModal({ post, onClose }: PostModalProps) {
                         className="rounded-full border border-gray-300 shadow-sm"
                       />
                     </Link>
-                    <Link href={`/perfil/${post.userName}`}>
+                    <Link href={`/perfil/${comment.userName}`}>
                       <div>
                         <p className="font-semibold text-gray-800">
                           {comment.nameUser}
@@ -112,7 +119,7 @@ export default function PostModal({ post, onClose }: PostModalProps) {
             />
           </div>
         </div>
-      </div>
+      </motion.div>
     </Modal>
   );
 }

@@ -93,7 +93,7 @@ export default function ConfigProfile({ user, onClose }: UserModalProps) {
             {/* Inputs */}
             <input name="name" value={formData.name} onChange={handleChange} className="p-2 w-full rounded border" placeholder="Nome" />
             <input name="userName" value={formData.userName} disabled className="p-2 w-full rounded border" placeholder="Usuário" />
-            <input name="email" value={formData.email} disabled className="p-2 w-full rounded border" placeholder="E-mail" />
+            <input name="email" value={formData.email}  className="p-2 w-full rounded border" placeholder="E-mail" />
             <input name="image" value={formData.image} onChange={handleChange} className="p-2 w-full rounded border" placeholder="Avatar URL" />
             <input name="banner" value={formData.banner} onChange={handleChange} className="p-2 w-full rounded border" placeholder="Banner URL" />
             <textarea name="bio" value={formData.bio} onChange={handleChange} className="p-2 w-full rounded border" rows={3} placeholder="Bio" />

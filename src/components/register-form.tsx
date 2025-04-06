@@ -18,7 +18,6 @@ import toast from "react-hot-toast";
 export default function Register() {
   const [formData, setFormData] = useState({
     name: "",
-    email: "",
     password: "",
     nameUser: "",
   });
@@ -54,7 +53,7 @@ export default function Register() {
 
     setSuccess("Usuário criado com sucesso!");
     toast.success("Usuário registrado com sucesso!");
-    setFormData({ name: "", email: "", password: "", nameUser: "" });
+    setFormData({ name: "",  password: "", nameUser: "" });
 
     confetti({
       particleCount: 150,
@@ -114,20 +113,6 @@ export default function Register() {
                     className="border p-2 rounded"
                     required
                   />
-                </div>
-                <div className="grid gap-2">
-                  <Label>Email</Label>
-                  <div className="flex items-center">
-                    <Input
-                      type="email"
-                      name="email"
-                      placeholder="E-mail"
-                      value={formData.email}
-                      onChange={handleChange}
-                      className="border p-2 rounded"
-                      required
-                    />
-                  </div>
                 </div>
                 <div className="grid gap-2">
                   <Label>Senha</Label>

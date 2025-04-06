@@ -5,20 +5,20 @@ import { prisma } from "@/lib/prisma";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    if (!body.email || !body.password || !body.name) {
+    if ( !body.password || !body.name) {
       return NextResponse.json({ error: "Todos os campos são obrigatórios!" }, { status: 400 });
     }
 
-    const existingUser = await prisma.user.findUnique({ where: { email: body.email } });
+    const existingUser = await prisma.user.findUnique({ where: { nameUser: body.name } });
     if (existingUser) {
-      return NextResponse.json({ error: "E-mail já cadastrado!" }, { status: 400 });
+      return NextResponse.json({ error: "nome de usuário já cadastrado!" }, { status: 400 });
     }
 
     const hashedPassword = await hash(body.password, 10);
     const user = await prisma.user.create({
       data: {
         name: body.name,
-        email: body.email,
+        email: "",
         nameUser: body.nameUser,
         password: hashedPassword,
         image: body.image || "https://i.pinimg.com/736x/7f/e4/25/7fe425baaa808391cd7e24f091a9967b.jpg",

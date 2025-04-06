@@ -56,14 +56,14 @@ export default function LoginForm() {
         <CardHeader>
           <CardTitle className="text-2xl">Faça Login</CardTitle>
           <CardDescription>
-            Digite seu e-mail abaixo para fazer login em sua conta
+            Digite seu nome de usuário abaixo para fazer login em sua conta
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={login}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
-                <Label htmlFor="User">Email</Label>
+                <Label htmlFor="User">Nome de usuário</Label>
                 <Input
                   id="user"
                   name="userName"

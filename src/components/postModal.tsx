@@ -4,7 +4,7 @@ import Modal from "./Modal";
 import NewComment from "./newComment";
 import { useComments } from "@/app/(private)/perfil/hook/useFetch";
 import { useEffect } from "react";
-import { motion } from "framer-motion"; // Importando o framer-motion
+import { motion } from "framer-motion";
 
 interface PostModalProps {
   post: any;
@@ -20,12 +20,11 @@ export default function PostModal({ post, onClose }: PostModalProps) {
 
   return (
     <Modal onClose={onClose}>
-      {/* Animação no conteúdo do modal */}
       <motion.div
-        className="rounded-lg shadow-lg p-6 max-w-lg mx-auto"
-        initial={{ opacity: 0, scale: 0.95 }} // Inicializando com opacidade baixa e escala pequena
-        animate={{ opacity: 1, scale: 1 }} // Finaliza com opacidade 100% e escala normal
-        transition={{ duration: 0.3 }} // Duração da animação
+        className="rounded-lg shadow-lg max-w-lg w-full "
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.3 }}
       >
         <h1 className="text-center font-bold text-2xl text-gray-900 mb-3">
           Post de {post.userName}
@@ -54,16 +53,16 @@ export default function PostModal({ post, onClose }: PostModalProps) {
             </p>
           </div>
         </div>
+
         {post.image && (
-          <div className="mt-4 w-[400px] h-[200px] relative rounded-md shadow-md overflow-hidden">
-          <Image
-            src={post.image}
-            alt="Imagem do Post"
-            fill
-            className="object-cover"
-          />
-        </div>
-        
+          <div className="mt-4 w-full h-48 sm:h-64 relative rounded-md shadow-md overflow-hidden">
+            <Image
+              src={post.image}
+              alt="Imagem do Post"
+              fill
+              className="object-cover"
+            />
+          </div>
         )}
 
         <h2 className="text-xl font-bold text-gray-900 mt-4">{post.title}</h2>
@@ -80,7 +79,7 @@ export default function PostModal({ post, onClose }: PostModalProps) {
               comments.map((comment: any) => (
                 <div
                   key={comment.id}
-                  className="p-4 bg-white rounded-lg shadow-md border border-gray-200 transition-transform hover:scale-105"
+                  className=" bg-white rounded-lg shadow-md border border-gray-200 transition-transform hover:scale-105"
                 >
                   <div className="flex items-center space-x-3">
                     <Link href={`/perfil/${comment.userName}`}>

@@ -81,9 +81,9 @@ export default function NewComment({ postId, refreshComments }: any) {
                   setContent("");
                   setError("");
                 }}
-                className="p-2 rounded-full hover:bg-gray-200"
+                className="p-2 rounded-full hover:bg-gray-200 cursor-pointer"
               >
-                <X className="w-5 h-5" />
+                <X className="w-5 h-5 cursor-pointer" />
               </Button>
             </div>
 
@@ -101,7 +101,7 @@ export default function NewComment({ postId, refreshComments }: any) {
               {error && <p className="text-red-500 text-sm">{error}</p>}
               <Button
                 type="submit"
-                className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition"
+                className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 cursor-pointer transition"
               >
                 Comentar
               </Button>

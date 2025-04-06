@@ -1,6 +1,6 @@
 "use client";
 import { AppSidebar } from "@/components/navbar";
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { SessionProvider } from "next-auth/react";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
@@ -29,6 +29,7 @@ export default function ProfileRoot({
     <SessionProvider >
         <SidebarProvider defaultOpen={true}>
           <AppSidebar />
+          <SidebarTrigger />
           <Toaster position="top-right" />
           <main className="flex-1 overflow-y-auto">
             <div className="max-w-4xl mx-auto w-full px-4">

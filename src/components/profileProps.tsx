@@ -51,7 +51,7 @@ export default function Profile() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto rounded-lg shadow-md bg-[#f5e9e9]">
+    <div className="max-w-4xl mx-auto rounded-lg shadow-md bg-[#f5e9e9] mb-10">
       <div className="relative">
         <Image
           width={800}

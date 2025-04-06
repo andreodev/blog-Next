@@ -5,34 +5,38 @@ import HeaderProps from "@/components/headerImage";
 import { Button } from "@/components/ui/button";
 import { BookOpen, Code, Code2Icon, User } from "lucide-react";
 import { motion } from "framer-motion"; 
+import Link from "next/link";
 
 export default function PageHome() {
 
   const cards = [
     {
-      title: "Projetos",
+      title: "Linkedin",
       description:
-        "Veja os projetos que desenvolvi, com foco em performance, boas práticas e design responsivo.",
-      icon: Code,
+        "Conecte-se comigo no Linkedin e fique por dentro das minhas atualizações profissionais.",
+      icon: BookOpen,
+      link: 'https://www.linkedin.com/in/andreo-henrique'
     },
     {
       title: "Sobre Mim",
       description:
         "Saiba mais sobre minha trajetória, habilidades e objetivos como desenvolvedor full-stack.",
       icon: User,
+      link: "https://www.andreodev.com.br"
     },
     {
       title: "Github",
       description:
         "Saiba mais sobre o desenvolvimento e código fonte dessa aplicação.",
       icon: Code2Icon,
+      link: "https://github.com/andreodev/blog-Next"
     },
   ];
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col" >
       <HeaderProps
-        buttonText="Participe"
+        buttonText="Teste a aplicação"
         imageSrc={bgHome}
         text="SEJA BEM-VINDO AO MEU BLOG. FAÇA LOGIN OU CADASTRE-SE PARA EXPLORAR O QUE FOI CONSTRUÍDO!"
       />
@@ -44,10 +48,11 @@ export default function PageHome() {
             Este blog é um espaço onde compartilho conhecimentos, experiências e projetos sobre desenvolvimento web,
             programação e tecnologia em geral.
           </p>
-
-          <Button className="mt-4 text-lg px-6 py-3 transition-all duration-500 hover:scale-105 bg-blue-600 text-white rounded-lg shadow-md hover:shadow-blue-500/50">
+          <Link href={'https://www.andreodev.com.br/' } target="_blank">
+          <Button className="mt-4 text-lg px-6 py-3 transition-all duration-500 hover:scale-105 bg-blue-600 text-white rounded-lg shadow-md hover:shadow-blue-500/50 cursor-pointer">
             Conheça meus Projetos
           </Button>
+          </Link>
         </section>
 
         <section className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
@@ -55,18 +60,20 @@ export default function PageHome() {
             const Icon = card.icon;
             return (
               <motion.div
-                key={index}
-                className="bg-gray-100 p-6 rounded-2xl shadow hover:shadow-md transition-all hover:scale-105"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
+              key={index}
+              className="bg-gray-100 p-6 rounded-2xl shadow hover:shadow-md transition-all hover:scale-105"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: index * 0.2 }}
               >
+                <Link href={`${card.link}`} target="_blank" className="flex flex-col items-center text-center">
                 <div className="flex items-center justify-center w-12 h-12 mb-4 rounded-full bg-blue-100 text-blue-600">
                   <Icon size={28} />
                 </div>
                 <h2 className="text-xl font-semibold mb-2">{card.title}</h2>
                 <p className="text-sm text-gray-600">{card.description}</p>
+                </Link>
               </motion.div>
             );
           })}

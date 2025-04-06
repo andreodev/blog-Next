@@ -100,8 +100,8 @@ export default function ConfigProfile({ user, onClose }: UserModalProps) {
             <input name="location" value={formData.location} onChange={handleChange} className="p-2 w-full rounded border" placeholder="Localização" />
 
             <div className="flex justify-end gap-2 pt-4">
-              <Button type="submit">Salvar Alterações</Button>
-              <Button type="button" onClick={() => setIsEditing(false)}>Cancelar</Button>
+              <Button type="submit" className="cursor-pointer">Salvar Alterações</Button>
+              <Button type="button" className="cursor-pointer" onClick={() => setIsEditing(false)}>Cancelar</Button>
             </div>
           </form>
         ) : (
@@ -113,7 +113,7 @@ export default function ConfigProfile({ user, onClose }: UserModalProps) {
             <p><strong>Localização:</strong> {formData.location}</p>
 
             <div className="text-center pt-4">
-              <Button onClick={() => setIsEditing(true)}>Editar Perfil</Button>
+              <Button className="cursor-pointer" onClick={() => setIsEditing(true)}>Editar Perfil</Button>
             </div>
           </div>
         )}

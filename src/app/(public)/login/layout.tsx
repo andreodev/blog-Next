@@ -1,6 +1,7 @@
 "use client";
 import { SessionProvider } from "next-auth/react";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,7 +25,10 @@ export default function LoginRoot({
 
   return (
     <div className="antialiased">
-      <SessionProvider>{children}</SessionProvider>
+      <SessionProvider>
+        <Analytics />
+        {children}
+        </SessionProvider>
     </div>
   );
 }

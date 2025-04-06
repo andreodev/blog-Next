@@ -2,7 +2,8 @@
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import { Button } from "./ui/button";
-import { motion } from "framer-motion"; // Importando o framer-motion
+import { motion } from "framer-motion";
+import toast from "react-hot-toast";
 
 export default function NewComment({ postId, refreshComments }: any) {
   const [content, setContent] = useState("");
@@ -10,9 +11,16 @@ export default function NewComment({ postId, refreshComments }: any) {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    document.body.style.overflow = showModal ? "hidden" : "";
+    const html = document.querySelector("html");
+
+    if (showModal) {
+      html?.classList.add("overflow-hidden");
+    } else {
+      html?.classList.remove("overflow-hidden");
+    }
+
     return () => {
-      document.body.style.overflow = "";
+      html?.classList.remove("overflow-hidden");
     };
   }, [showModal]);
 
@@ -36,6 +44,7 @@ export default function NewComment({ postId, refreshComments }: any) {
         setError("");
         setShowModal(false);
         refreshComments();
+        toast.success("Comentário adicionado com sucesso!");
       } else {
         setError("Erro ao criar comentário. Tente novamente.");
         console.error("Erro ao criar comentário");
@@ -56,14 +65,13 @@ export default function NewComment({ postId, refreshComments }: any) {
       </div>
 
       {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-[#050505b2] z-50">
-          {/* Animação no modal usando framer-motion */}
+        <div className="fixed inset-0 flex items-center justify-center bg-black/60 z-50">
           <motion.div
             className="bg-white p-6 rounded-lg shadow-lg w-96"
             onClick={(e) => e.stopPropagation()}
-            initial={{ opacity: 0, scale: 0.95 }} // Inicializa o modal com opacidade baixa e escala pequena
-            animate={{ opacity: 1, scale: 1 }} // Quando o modal aparecer, vai ter opacidade 1 e escala normal
-            transition={{ duration: 0.3 }} // Tempo da animação
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3 }}
           >
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold">Novo comentário</h2>
@@ -73,9 +81,9 @@ export default function NewComment({ postId, refreshComments }: any) {
                   setContent("");
                   setError("");
                 }}
-                className="p-2 rounded-full hover:bg-gray-200 cursor-pointer"
+                className="p-2 rounded-full hover:bg-gray-200"
               >
-                <X className="w-5 h-5 cursor-pointer" />
+                <X className="w-5 h-5" />
               </Button>
             </div>
 
@@ -90,9 +98,7 @@ export default function NewComment({ postId, refreshComments }: any) {
                 placeholder="Digite seu comentário"
                 className="w-full p-2 border rounded-md h-20 focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
-              {error && (
-                <p className="text-red-500 text-sm">{error}</p>
-              )}
+              {error && <p className="text-red-500 text-sm">{error}</p>}
               <Button
                 type="submit"
                 className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition"

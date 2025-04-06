@@ -39,6 +39,7 @@ export default function PostModal({ post, onClose }: PostModalProps) {
               width={50}
               height={50}
               className="rounded-full border shadow-sm"
+              style={{ objectFit: "cover" }}
             />
           </Link>
           <div>
@@ -54,15 +55,15 @@ export default function PostModal({ post, onClose }: PostModalProps) {
           </div>
         </div>
         {post.image && (
-          <div className="mt-4">
-            <Image
-              src={post.image}
-              alt="Imagem do Post"
-              width={400}
-              height={200}
-              className="rounded-md shadow-md object-cover"
-            />
-          </div>
+          <div className="mt-4 w-[400px] h-[200px] relative rounded-md shadow-md overflow-hidden">
+          <Image
+            src={post.image}
+            alt="Imagem do Post"
+            fill
+            className="object-cover"
+          />
+        </div>
+        
         )}
 
         <h2 className="text-xl font-bold text-gray-900 mt-4">{post.title}</h2>
@@ -89,6 +90,7 @@ export default function PostModal({ post, onClose }: PostModalProps) {
                         width={40}
                         height={40}
                         className="rounded-full border border-gray-300 shadow-sm"
+                        style={{ objectFit: "cover" }}
                       />
                     </Link>
                     <Link href={`/perfil/${comment.userName}`}>

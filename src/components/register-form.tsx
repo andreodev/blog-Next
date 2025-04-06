@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState} from "react";
 import { useRouter } from "next/navigation";
 import {
   Card,
@@ -11,19 +11,22 @@ import {
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { useSession } from "next-auth/react";
+import confetti from "canvas-confetti";
+import toast from "react-hot-toast";
 
 export default function Register() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
-    image: "",
     nameUser: "",
   });
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { data: session, status } = useSession();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -33,7 +36,7 @@ export default function Register() {
     e.preventDefault();
     setError("");
     setSuccess("");
-    setLoading(true); 
+    setLoading(true);
 
     const res = await fetch("/api/profile/users/create", {
       method: "POST",
@@ -44,32 +47,36 @@ export default function Register() {
     const data = await res.json();
     if (!res.ok) {
       setError(data.error);
-      setLoading(false); 
+      toast.error(data.error || "Erro ao registrar");
+      setLoading(false);
       return;
     }
 
     setSuccess("Usuário criado com sucesso!");
-    setFormData({ name: "", email: "", password: "", image: "", nameUser: "" });
+    toast.success("Usuário registrado com sucesso!");
+    setFormData({ name: "", email: "", password: "", nameUser: "" });
 
-    setLoading(false); 
+    confetti({
+      particleCount: 150,
+      spread: 90,
+      origin: { y: 0.6 },
+    });
+
+    setLoading(false);
+
+    // Redireciona logo em seguida
+    router.push("/login");
   };
-
-  useEffect(() => {
-    if (success) {
-      const timer = setTimeout(() => {
-        router.push("/login");
-      }, 3000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [success, router]);
-
   return (
     <div className="flex flex-col gap-6">
       {success ? (
         <div className="flex flex-col justify-center items-center min-h-screentext-center p-6">
-          <h1 className="text-4xl font-bold text-green-600">Registrado com sucesso!</h1>
-          <p className="mt-4 text-lg">Você será redirecionado para a página de login.</p>
+          <h1 className="text-4xl font-bold text-green-600">
+            Registrado com sucesso!
+          </h1>
+          <p className="mt-4 text-lg">
+            Você será redirecionado para a página de login.
+          </p>
           <p className="mt-4 text-sm text-gray-500">Aguarde um momento...</p>
         </div>
       ) : (
@@ -101,7 +108,7 @@ export default function Register() {
                   <Input
                     type="text"
                     name="nameUser"
-                    placeholder="Nome"
+                    placeholder="Nome de usuário"
                     value={formData.nameUser}
                     onChange={handleChange}
                     className="border p-2 rounded"
@@ -136,26 +143,13 @@ export default function Register() {
                     />
                   </div>
                 </div>
-                <div className="grid gap-2">
-                  <Label>Endereço da Imagem</Label>
-                  <div className="flex items-center">
-                    <Input
-                      type="text"
-                      name="image"
-                      placeholder="Link da imagem (opcional)"
-                      value={formData.image}
-                      onChange={handleChange}
-                      className="border p-2 rounded"
-                    />
-                  </div>
-                </div>
                 <Button
                   type="submit"
                   className="bg-blue-500 text-white rounded"
-                  disabled={loading} 
+                  disabled={loading}
                 >
                   {loading ? (
-                    <span className="animate-spin">🔄</span> 
+                    <span className="animate-spin">🔄</span>
                   ) : (
                     "Cadastrar"
                   )}

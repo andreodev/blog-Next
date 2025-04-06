@@ -21,21 +21,18 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-export default function HomeRoot({ children }: { children: React.ReactNode }) {
+export default function RegisterRoot({ children }: { children: React.ReactNode }) {
   return (
     <div
       className={`antialiased ${geistSans.variable} ${geistMono.variable} ${inter.variable}`}
     >
       <SessionProvider >
-        <SidebarProvider defaultOpen={true}>
-          <AppSidebar />
           <Toaster position="top-right" />
           <main className="flex-1 overflow-y-auto">
             <div className="max-w-4xl mx-auto w-full px-4">
               {children}
             </div>
           </main>
-        </SidebarProvider>
       </SessionProvider>
     </div>
   );

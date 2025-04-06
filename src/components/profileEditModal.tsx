@@ -1,6 +1,9 @@
+"use client";
+
 import { useState } from "react";
 import { Button } from "./ui/button";
 import Modal from "./Modal";
+import toast from "react-hot-toast";
 
 interface UserModalProps {
   user: any;
@@ -38,6 +41,8 @@ export default function ConfigProfile({ user, onClose }: UserModalProps) {
       nameUser: user.userName,
     };
 
+    const toastId = toast.loading("Atualizando perfil...");
+
     try {
       const response = await fetch("/api/profile/users/edit", {
         method: "PUT",
@@ -48,22 +53,23 @@ export default function ConfigProfile({ user, onClose }: UserModalProps) {
       });
 
       if (!response.ok) {
-        alert("Erro ao atualizar perfil");
+        toast.error("Erro ao atualizar perfil", { id: toastId });
       } else {
-        alert("Perfil atualizado com sucesso!");
+        toast.success("Perfil atualizado com sucesso!", { id: toastId });
         setIsEditing(false);
-        window.location.reload(); // Recarrega após salvar
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       }
     } catch (error) {
       console.error("Erro ao atualizar perfil:", error);
-      alert("Erro ao atualizar perfil");
+      toast.error("Erro inesperado ao atualizar perfil", { id: toastId });
     }
   };
 
   return (
     <Modal onClose={onClose}>
-      <div className="text-black">
-        {/* Banner Preview */}
+      <div className="text-black p-16">
         {formData.banner && (
           <img
             src={formData.banner}
@@ -72,90 +78,30 @@ export default function ConfigProfile({ user, onClose }: UserModalProps) {
           />
         )}
 
-        {/* Imagem de Perfil */}
         <div className="flex justify-center -mt-12 mb-4">
           {formData.image && (
             <img
               src={formData.image}
               alt="Perfil"
-              className="w-24 h-24 rounded-full border-4  object-cover"
+              className="w-24 h-24 rounded-full border-4 object-cover"
             />
           )}
         </div>
 
         {isEditing ? (
-          <form onSubmit={handleEdit} className="space-y-2 ">
-            <h1>Nome: </h1>
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              className="p-2 w-full rounded border"
-              placeholder="Nome"
-            />
-            <h1>Nome de Usuario:</h1>
-            <input
-              type="text"
-              name="userName"
-              value={formData.userName}
-              onChange={handleChange}
-              className="p-2 w-full rounded border"
-              placeholder="Nome de usuário"
-              disabled
-            />
-            <h1>Email:</h1>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className="p-2 w-full rounded border"
-              placeholder="E-mail"
-              disabled
-            />
-            <h1>Avatar:</h1>
-            <input
-              type="text"
-              name="image"
-              value={formData.image}
-              onChange={handleChange}
-              className="p-2 w-full rounded border"
-              placeholder="URL da imagem de perfil"
-            />
-            <h1>Banner:</h1>
-            <input
-              type="text"
-              name="banner"
-              value={formData.banner}
-              onChange={handleChange}
-              className="p-2 w-full rounded border"
-              placeholder="URL do banner"
-            />
-            <h1>Bio: </h1>
-            <textarea
-              name="bio"
-              value={formData.bio}
-              onChange={handleChange}
-              className="p-2 w-full rounded border resize-none"
-              rows={3}
-              placeholder="Biografia"
-            />
-            <h1>Localização</h1>
-            <input
-              type="text"
-              name="location"
-              value={formData.location}
-              onChange={handleChange}
-              className="p-2 w-full rounded border"
-              placeholder="Localização"
-            />
+          <form onSubmit={handleEdit} className="space-y-2">
+            {/* Inputs */}
+            <input name="name" value={formData.name} onChange={handleChange} className="p-2 w-full rounded border" placeholder="Nome" />
+            <input name="userName" value={formData.userName} disabled className="p-2 w-full rounded border" placeholder="Usuário" />
+            <input name="email" value={formData.email} disabled className="p-2 w-full rounded border" placeholder="E-mail" />
+            <input name="image" value={formData.image} onChange={handleChange} className="p-2 w-full rounded border" placeholder="Avatar URL" />
+            <input name="banner" value={formData.banner} onChange={handleChange} className="p-2 w-full rounded border" placeholder="Banner URL" />
+            <textarea name="bio" value={formData.bio} onChange={handleChange} className="p-2 w-full rounded border" rows={3} placeholder="Bio" />
+            <input name="location" value={formData.location} onChange={handleChange} className="p-2 w-full rounded border" placeholder="Localização" />
 
             <div className="flex justify-end gap-2 pt-4">
               <Button type="submit">Salvar Alterações</Button>
-              <Button type="button" onClick={() => setIsEditing(false)}>
-                Cancelar
-              </Button>
+              <Button type="button" onClick={() => setIsEditing(false)}>Cancelar</Button>
             </div>
           </form>
         ) : (

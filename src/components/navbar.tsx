@@ -1,88 +1,79 @@
 "use client";
-
-import { useState } from "react";
 import {
-  LogOut,
-  UserIcon,
-  Menu,
-  HomeIcon,
+  Calendar,
+  ChevronLeftSquareIcon,
+  Home,
+  Inbox,
+  Search,
+  Settings,
+  User2,
 } from "lucide-react";
-import { signOut, useSession } from "next-auth/react";
-import Link from "next/link";
-import clsx from "clsx";
 
-const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(false); // Inicia fechado no mobile
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "@/components/ui/sidebar";
+import { useSession, signOut } from "next-auth/react";
+
+export function AppSidebar() {
   const { data } = useSession();
 
+  const items = [
+    {
+      title: "Home",
+      url: "/home",
+      icon: Home,
+    },
+    {
+      title: "Meu Perfil",
+      url: `/perfil/${data?.user?.name}`,
+      icon: User2,
+    },
+    {
+      title: "Sair",
+      url: null, 
+      icon: ChevronLeftSquareIcon,
+      action: () => signOut(),
+    },
+  ];
+
   return (
-    <>
-      {/* Botão de abrir sidebar no mobile */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="md:hidden  top-4 left-4 bg-gray-900 text-white rounded-md shadow-md"
-      >
-        <Menu />
-      </button>
-
-      {/* Overlay no mobile quando sidebar está aberta */}
-      {isOpen && (
-        <div
-          onClick={() => setIsOpen(false)}
-          className="md:hidden fixed inset-0 bg-black/50 z-40"
-        />
-      )}
-
-      {/* Sidebar */}
-      <aside
-        className={clsx(
-          "bg-gray-900 text-white fixed top-0 left-0 h-full z-50 p-6 flex flex-col justify-between transition-all duration-300",
-          isOpen ? "w-64" : "w-0 overflow-hidden",
-          "md:w-64 md:static md:h-auto md:flex"
-        )}
-      >
-        <div className="space-y-6">
-          {/* Logo */}
-          <Link
-            href="/home"
-            className="text-2xl font-bold block hover:text-gray-400"
-          >
-            Viewreo
-          </Link>
-
-          {/* Navegação */}
-          <nav className="pl-2 space-y-2">
-            <Link
-              href="/home"
-              className="flex items-center gap-2 py-2 hover:text-gray-400"
-            >
-              <HomeIcon className="w-4 h-4" />
-              Home
-            </Link>
-            <Link
-              href={`/perfil/${data?.user?.name}`}
-              className="flex items-center gap-2 py-2 hover:text-gray-400"
-            >
-              <UserIcon className="w-4 h-4" />
-              Meu Perfil
-            </Link>
-            <button
-              onClick={() => signOut({ callbackUrl: "/login" })}
-              className="flex items-center gap-2 py-2 hover:text-gray-400 cursor-pointer"
-            >
-              <LogOut className="w-4 h-4" />
-              Logout
-            </button>
-          </nav>
-        </div>
-
-        {/* Rodapé */}
-        <div className="text-sm text-gray-400 mt-6 hidden md:block">
-          © {new Date().getFullYear()} Viewreo.v1.0
-        </div>
-      </aside>
-    </>
+    <Sidebar>
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {items.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild>
+                    {item.action ? (
+                      <button
+                        onClick={item.action}
+                        className="flex items-center w-full text-left gap-2 cursor-pointer"
+                      >
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </button>
+                    ) : (
+                      <a href={item.url}>
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </a>
+                    )}
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+    </Sidebar>
   );
-};
-
-export default Sidebar;
+}

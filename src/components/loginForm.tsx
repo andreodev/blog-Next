@@ -81,13 +81,6 @@ export default function LoginForm() {
               <Button type="submit" className="w-full cursor-pointer">
                 Login
               </Button>
-              <Button
-                variant="outline"
-                className="w-full cursor-pointer"
-                onClick={() => signIn("github", { callbackUrl: "/" })}
-              >
-                Entre com o Github
-              </Button>
             </div>
             {/* Exibindo a mensagem de erro, se existir */}
             {errorMessage && (

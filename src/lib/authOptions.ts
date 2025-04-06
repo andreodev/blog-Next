@@ -1,9 +1,9 @@
-import NextAuth, { NextAuthOptions } from "next-auth";
+import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import { prisma } from "@/lib/prisma";
 
-const authOptions: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
   pages: {
     signIn: "/",
   },
@@ -11,7 +11,7 @@ const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        userName: { label: "User", type: "user" },
+        userName: { label: "User", type: "text" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
@@ -38,7 +38,7 @@ const authOptions: NextAuthOptions = {
         return {
           id: user.id,
           name: user.nameUser,
-          nameUser: user.name, 
+          nameUser: user.name,
           email: user.email,
           image: user.image || "/default-avatar.png",
         };
@@ -65,6 +65,3 @@ const authOptions: NextAuthOptions = {
     },
   },
 };
-
-const handler = NextAuth(authOptions);
-export { handler as GET, handler as POST };

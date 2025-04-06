@@ -58,7 +58,7 @@ export default function Profile() {
           height={200}
           src={
             filteredUser.banner ||
-            "https://i.pinimg.com/736x/f1/4c/4c/f14c4c88a836ec9c5f79d313e0d8cd7d.jpg"
+            "https://i.pinimg.com/736x/bd/da/fc/bddafc029d86df72bef91bba70973c71.jpg"
           }
           alt="Banner"
           className="w-full h-56 object-cover"
@@ -71,7 +71,7 @@ export default function Profile() {
             height={100}
             src={
               filteredUser.image ||
-              "https://i.pinimg.com/736x/f1/4c/4c/f14c4c88a836ec9c5f79d313e0d8cd7d.jpg"
+              "https://i.pinimg.com/736x/a3/cf/ce/a3cfce855a833b760b5a8cc34a1f4cd1.jpg"
             }
             alt="Profile"
             className="w-32 h-32 rounded-full border-4 border-black"

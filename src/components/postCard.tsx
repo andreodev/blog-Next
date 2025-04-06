@@ -10,7 +10,7 @@ interface PostCardProps {
 
 export default function PostCard({ post, onOpenModal }: PostCardProps) {
   return (
-    <div className="border rounded-lg shadow-md bg-white hover:shadow-lg transition-shadow">
+    <div className="border rounded-lg shadow-md  hover:shadow-lg transition-shadow">
       <div className="flex flex-col text-start">
         <div className="flex items-center space-x-2 p-2">
           <Link href={`/perfil/${post.userName}`}>
@@ -36,14 +36,14 @@ export default function PostCard({ post, onOpenModal }: PostCardProps) {
           </div>
         </div>
         {post.image && (
-          <div className="flex justify-center my-1">
-            <Image
-              src={post.image}
-              alt="Imagem do post"
-              width={600}
-              height={200}
-            />
-          </div>
+          <div className="relative w-full h-52 rounded-lg overflow-hidden">
+          <Image
+            src={post.image}
+            alt="Imagem do post"
+            fill
+            className="object-cover"
+          />
+        </div>
         )}
         <p className="font-medium text-gray-700 text-lg p-1">{post.title}</p>
         <p className="font-medium text-gray-700 text-lg p-3">{post.content}</p>

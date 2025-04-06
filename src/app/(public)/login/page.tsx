@@ -22,7 +22,6 @@ export default function LoginPage() {
         origin: { y: 0.6 },
       });
 
-      // Pequeno delay para os confetes aparecerem antes do redirecionamento
       setTimeout(() => {
         router.push("/home");
       }, 9000);

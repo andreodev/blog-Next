@@ -107,7 +107,7 @@ export default function AllPosts() {
   }
 
   return (
-    <div className="max-w-lg mx-auto rounded-lg space-y-6" id="Post">
+    <div className="ml-auto rounded-lg shadow-xl space-y-6" id="Post">
       <div className="p-6 bg-white rounded-lg shadow-sm">
         <NewPost refreshPosts={fetchPosts} />
       </div>

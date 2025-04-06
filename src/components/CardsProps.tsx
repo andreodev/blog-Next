@@ -15,13 +15,14 @@ export default function CardsProps({ name, imageUrl }: TPCardProps) {
   return (
     <Card className="w-full max-w-3xs border rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 mt-6">
       <CardContent className="flex flex-col items-center">
-        <Image
-          src={imageUrl}
-          alt={name}
-          width={200}
-          height={200}
-          className="rounded-lg object-cover"
-        />
+      <Image
+  src={imageUrl}
+  alt={name}
+  width={200}
+  height={200}
+  className="rounded-lg object-cover"
+  style={{ height: "auto", width: "auto" }}
+/>
         <h2 className="text-lg max-w-44 font-normal mt-3">{name}</h2>
       </CardContent>
       <CardFooter className="p-4 flex justify-between w-full">

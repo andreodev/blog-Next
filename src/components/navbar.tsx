@@ -24,6 +24,8 @@ import { useSession, signOut } from "next-auth/react";
 export function AppSidebar() {
   const { data } = useSession();
 
+  console.log(data)
+
   const items = [
     {
       title: "Home",

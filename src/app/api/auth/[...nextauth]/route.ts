@@ -37,9 +37,9 @@ const authOptions: NextAuthOptions = {
 
         return {
           id: user.id,
-  name: user.name,           // nome real
-  nameUser: user.nameUser,   // nome de usuário (login)
-  email: user.email,
+          nameUser: user.name,
+          name: user.nameUser,
+          email: user.email,
           image: user.image || "/default-avatar.png",
         };
       },

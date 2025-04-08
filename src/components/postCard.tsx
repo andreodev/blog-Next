@@ -9,6 +9,7 @@ interface PostCardProps {
 }
 
 export default function PostCard({ post, onOpenModal }: PostCardProps) {
+  console.log(post)
   return (
     <div className="border rounded-lg shadow-md  hover:shadow-lg transition-shadow">
       <div className="flex flex-col text-start">

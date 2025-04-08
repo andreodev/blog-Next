@@ -52,7 +52,7 @@
     "@types/node": "^20",
     "@types/react": "^19.0.12",
     "@types/react-dom": "^19",
-    "prisma": "^6.5.0",
+    "prisma": "^6.6.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
